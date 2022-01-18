@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">FasholSeller</string>
+    <string name="app_name">Fashol Seller</string>
+    <string name="notifications">Notifications</string>
+    <string name="new_order">New Order</string>
+    <string name="back">Back</string>
+    <string name="filter">Filter</string>
+    <string name="menu">Menu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notice_board">Notice Board</string>
+    <string name="see_more">See More</string>
+    <string name="notice_item_sample">আসছে ১৯/১২/২০২২ তারিখ থেকে অফিস পূর্ণরায় যথা নিয়মে চলবে। সকলকে যথা সময় অফিসে আসার জন্য বিশেষ ভাবে বলা হছে। আসছে ১৯/১২/২০২২ তারিখ থেকে অফিস পূর্ণরায় যথা নিয়মে চলবে। সকলকে যথা সময় অফিসে আসার জন্য বিশেষ ভাবে বলা হছে।</string>
+    <string name="total_sell">Total Sell</string>
+    <string name="_230">230</string>
+    <string name="all_order">All Order</string>
+    <string name="order_list">Order List</string>
+    <string name="order_number">Order Number</string>
+    <string name="t_price">T. Price</string>
+    <string name="customer">Customer</string>
 </resources>
