@@ -1,4 +1,4 @@
-package com.fashol.seller.ui.activity
+package com.fashol.seller.view.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.fashol.seller.databinding.ActivitySplashScreenBinding
+import com.fashol.seller.utilits.Utils
+import com.fashol.seller.utilits.Utils.fullScreen
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 @SuppressLint("CustomSplashScreen")
@@ -18,9 +20,7 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        fullScreen(this)
 
         mHandler = Handler(mainLooper)
         doWork()
@@ -29,7 +29,7 @@ class SplashScreen : AppCompatActivity() {
 
 
     private fun doWork() {
-        val prg = 3000
+        val prg = 30
         Thread{
             for (i in  0..100) {
                 Thread.sleep(30)
