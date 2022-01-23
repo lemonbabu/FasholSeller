@@ -23,6 +23,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         binding = FragmentDashboardBinding.bind(view)
         fc = activity as FragmentCommunicator
 
+        binding.tvAllOrder.setOnClickListener {
+            fc.passData("OrderList")
+        }
+
+        orderList.add(OrderDataModel("1", "F-WR2424", "Mr Hamidur", 2000.0F))
+        orderList.add(OrderDataModel("2", "F-RK2221", "Kacha bazar", 1000.0F))
+        orderList.add(OrderDataModel("3", "F-CR5367", "Mohonbag Bazar", 3422.0F))
+        orderList.add(OrderDataModel("4", "F-AF2124", "Motiyar Rahman", 23232.0F))
         orderList.add(OrderDataModel("1", "F-WR2424", "Mr Hamidur", 2000.0F))
         orderList.add(OrderDataModel("2", "F-RK2221", "Kacha bazar", 1000.0F))
         orderList.add(OrderDataModel("3", "F-CR5367", "Mohonbag Bazar", 3422.0F))

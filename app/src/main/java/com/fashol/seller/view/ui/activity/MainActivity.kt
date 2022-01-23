@@ -15,6 +15,7 @@ import com.fashol.seller.utilits.Utils.fullScreen
 import com.fashol.seller.view.ui.fragment.DashboardFragment
 import com.fashol.seller.view.ui.fragment.OrderListFragment
 import com.fashol.seller.view.ui.fragment.SelectCustomerFragment
+import com.fashol.seller.view.ui.fragment.profile.UserProfileFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_header.view.*
 
@@ -57,6 +58,14 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
             }
         }
 
+        binding.navView.getHeaderView(0).tvUserName.setOnClickListener {
+            userProfile()
+        }
+
+        binding.navView.getHeaderView(0).ivUserAvatar.setOnClickListener {
+            userProfile()
+        }
+
         binding.titleBar.btnBack.setOnClickListener {
             menuHome()
         }
@@ -72,7 +81,9 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
 
         when (txt) {
             "deliveryList" -> {
-
+            }
+            "OrderList" -> {
+                orderList()
             }
             else -> {
                 menuHome()
@@ -85,6 +96,7 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
         binding.titleBar.btnOpenMenu.visibility = View.VISIBLE
         binding.titleBar.btnNewOrder.visibility = View.VISIBLE
         binding.titleBar.btnNotification.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.app_name)
         pressBack = false
     }
 
@@ -92,6 +104,13 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
         replaceFragment(OrderListFragment())
         binding.titleBar.btnFilter.visibility = View.VISIBLE
         binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.order_list)
+    }
+
+    private fun userProfile() {
+        replaceFragment(UserProfileFragment ())
+        binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.user_profile)
     }
 
     private fun logout() {
@@ -101,6 +120,8 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
     private fun selectCustomer(){
         replaceFragment(SelectCustomerFragment())
         pressBack = true
+        binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.select_customer)
     }
 
     private fun replaceFragment(fragment: Fragment){
@@ -141,6 +162,7 @@ class MainActivity : AppCompatActivity(), FragmentCommunicator, NavigationView.O
             R.id.nav_dashboard -> menuHome()
             R.id.nav_order -> orderList()
             R.id.nav_logout -> logout()
+            R.id.nav_user_profile -> userProfile()
         }
         return true
     }
