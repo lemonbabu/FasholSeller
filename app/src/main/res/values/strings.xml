@@ -80,5 +80,7 @@
     <string name="address">Address</string>
     <string name="store_name">Store Name</string>
     <string name="cancel">Cancel</string>
+    <string name="order_place_confirm">Order Place Confirm</string>
+    <string name="view_profile">View Profile</string>
 
 </resources>

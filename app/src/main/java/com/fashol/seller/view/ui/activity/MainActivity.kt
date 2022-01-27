@@ -16,8 +16,8 @@ import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
 import com.fashol.seller.utilits.Utils.fullScreen
 import com.fashol.seller.view.ui.fragment.DashboardFragment
-import com.fashol.seller.view.ui.fragment.OrderListFragment
-import com.fashol.seller.view.ui.fragment.SelectCustomerFragment
+import com.fashol.seller.view.ui.fragment.order.OrderListFragment
+import com.fashol.seller.view.ui.fragment.customer.SelectCustomerFragment
 import com.fashol.seller.view.ui.fragment.cart.AddProductFragment
 import com.fashol.seller.view.ui.fragment.cart.CartFragment
 import com.fashol.seller.view.ui.fragment.cart.ProductDetailsFragment
@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_header.view.*
 import com.fashol.seller.R
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
+import com.fashol.seller.view.ui.fragment.order.OrderConfirmationFragment
 
 
 class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmentCommunicator, NavigationView.OnNavigationItemSelectedListener {
@@ -97,6 +98,10 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             }
         }
 
+        binding.cartFooter.btnOrderSubmit.setOnClickListener {
+            orderConfirmationPage()
+        }
+
 
     }
 
@@ -109,6 +114,8 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         when (txt) {
             "deliveryList" -> {
             }
+            "CustomerProfile" -> userProfile()
+            "Dashboard" -> menuHome()
             "OrderList" -> orderList()
             "ProductPage" -> productPage()
             else -> {
@@ -161,6 +168,14 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         loadProductData()
     }
 
+    private fun orderConfirmationPage(){
+        replaceFragment(OrderConfirmationFragment())
+        binding.titleBar.btnOpenMenu.visibility = View.VISIBLE
+        binding.titleBar.tvCustomerName.visibility = View.VISIBLE
+        binding.titleBar.ivCustomerAvatar.visibility = View.VISIBLE
+        binding.titleBar.tvCustomerDetails.visibility = View.VISIBLE
+    }
+
     private fun logout() {
 
     }
@@ -193,6 +208,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding.titleBar.btnCart.visibility = View.GONE
         binding.titleBar.tvCustomerDetails.visibility = View.GONE
         binding.titleBar.tvChartNumberOfItem.visibility = View.GONE
+        binding.fcPopUp.visibility = View.GONE
 
         if (binding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)

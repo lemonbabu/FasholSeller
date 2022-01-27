@@ -29,7 +29,7 @@ class SplashScreen : AppCompatActivity() {
 
 
     private fun doWork() {
-        val prg = 30
+        val prg = 3000
         Thread{
             for (i in  0..100) {
                 Thread.sleep(30)
