@@ -3,25 +3,24 @@ package com.fashol.seller.view.ui.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.model.orderdata.OrderDataModel
 import com.fashol.seller.databinding.FragmentDashboardBinding
-import com.fashol.seller.utilits.FragmentCommunicator
+import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.view.adapter.OrderListAdapter
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private lateinit var binding: FragmentDashboardBinding
-    private lateinit var fc: FragmentCommunicator
+    private lateinit var fc: MainFragmentCommunicator
     private lateinit var orderListAdapter: OrderListAdapter
     private var orderList: ArrayList<OrderDataModel> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDashboardBinding.bind(view)
-        fc = activity as FragmentCommunicator
+        fc = activity as MainFragmentCommunicator
 
         binding.tvAllOrder.setOnClickListener {
             fc.passData("OrderList")

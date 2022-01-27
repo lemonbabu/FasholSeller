@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
-import com.fashol.seller.data.model.customerdata.CustomerDataModel
-import com.squareup.picasso.Picasso
+import com.fashol.seller.data.model.productdata.CategoryDataModel
 
-class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener): RecyclerView.Adapter<CustomerAdapter.MyViewHolder>(){
-    private var customerList: ArrayList<CustomerDataModel> = ArrayList()
+class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener): RecyclerView.Adapter<CategoryAdapter.MyViewHolder>(){
+    private var customerList: ArrayList<CategoryDataModel> = ArrayList()
 
-    fun submitList(list: List<CustomerDataModel>){
+    fun submitList(list: List<CategoryDataModel>){
         val oldList = customerList
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             BookDiffCallBack(
@@ -22,20 +21,20 @@ class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener):
                 list
             )
         )
-        customerList = list as ArrayList<CustomerDataModel>
+        customerList = list as ArrayList<CategoryDataModel>
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): CustomerAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_customer_single, parent, false)
         return MyViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: CustomerAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CategoryAdapter.MyViewHolder, position: Int) {
         val customer = customerList[position]
 
         holder.name.text = customer.name
-        holder.avatar.setImageResource(R.drawable.img_fruit)
+       // holder.avatar.setImageResource(R.drawable.img_fruit)
 
         //val avatar = customer.avatar
         //load image into view
@@ -56,8 +55,8 @@ class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener):
     }
 
     class BookDiffCallBack(
-        private var oldCustomerList: List<CustomerDataModel>,
-        private var newCustomerList: List<CustomerDataModel>
+        private var oldCustomerList: List<CategoryDataModel>,
+        private var newCustomerList: List<CategoryDataModel>
     ): DiffUtil.Callback(){
 
         override fun getOldListSize(): Int {

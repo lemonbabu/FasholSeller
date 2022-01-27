@@ -1,4 +1,4 @@
-package com.fashol.seller.view.ui.fragment.profile
+package com.fashol.seller.view.ui.fragment.customer
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

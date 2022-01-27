@@ -43,6 +43,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="hello">Hello</string>
     <string name="user_profile">User Profile</string>
+    <string name="add_new_customer">Add New Customer</string>
     <string name="select_customer">Select Customer</string>
     <string name="this_month">This Month</string>
     <string name="due">Due</string>
@@ -51,5 +52,33 @@
     <string name="location">Location</string>
     <string name="due_management">Due Management</string>
     <string name="product_name">Product Name</string>
+    <string name="details">Details</string>
+    <string name="_0">0</string>
+    <string name="product_name_sample">টমেটো</string>
+    <string name="unit_">একক :</string>
+    <string name="kg">কেজি</string>
+    <string name="price_">দাম :</string>
+    <string name="price_sample">২৫</string>
+    <string name="item_price">দাম: ২৫ * ৫ = ১২৫ tk</string>
+    <string name="variant_">ভারিয়েন্ট :</string>
+    <string name="quantity_">পরিমাণ :</string>
+    <string name="note">Note</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="item">Item:</string>
+    <string name="_20">20</string>
+    <string name="separator">|</string>
+    <string name="_20_000_tk">20,000 tk</string>
+    <string name="submit">Submit</string>
+    <string name="multiple_sign">*</string>
+    <string name="remove">Remove</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="customer_name_sample">Customer Name</string>
+    <string name="customer_phone">Customer Phone</string>
+    <string name="nid_number">NID Number</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="address">Address</string>
+    <string name="store_name">Store Name</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
