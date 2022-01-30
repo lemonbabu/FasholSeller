@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
-import com.fashol.seller.data.model.orderdata.OrderDataModel
+import com.fashol.seller.data.model.orderdata.OrderListDataModel
 
 class OrderListAdapter : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
-    private var orderList: ArrayList<OrderDataModel> = ArrayList()
+    private var orderList: ArrayList<OrderListDataModel.Result> = ArrayList()
 
-    fun submitList(list: List<OrderDataModel>){
-        orderList = list as ArrayList<OrderDataModel>
+    fun submitList(list: List<OrderListDataModel.Result>){
+        orderList = list as ArrayList<OrderListDataModel.Result>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -23,9 +23,9 @@ class OrderListAdapter : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val order = orderList[position]
 
-        holder.orderId.text = order.orderid
-        holder.customerName.text = order.customerName
-        holder.tPrice.text = order.tPrice.toString()
+        holder.orderId.text = order.order_no
+        holder.customerName.text = order.customer.name
+        holder.tPrice.text = order.status
     }
 
     override fun getItemCount(): Int {

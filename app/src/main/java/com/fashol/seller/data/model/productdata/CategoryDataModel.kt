@@ -1,31 +1,14 @@
 package com.fashol.seller.data.model.productdata
 
 class CategoryDataModel(
-    var id: String,
-    var avatar: String,
-    var name: String
+    var error: Boolean, // false
+    var message: String, // Category list
+    var result: List<Result>,
+    var success: Boolean // true
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (javaClass != other?.javaClass){
-            return false
-        }
-        other as ProductDataModel
-        if (id != other.id){
-            return false
-        }
-        if (avatar != other.avatar){
-            return false
-        }
-        if (name != other.name){
-            return false
-        }
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + avatar.hashCode()
-        result = 31 * result + name.hashCode()
-        return result
-    }
+    data class Result(
+        var id: Int, // 1
+        var image: String, // /defaults/vagitable.jpeg
+        var name: String // Vagitables
+    )
 }

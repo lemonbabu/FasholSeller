@@ -10,6 +10,8 @@ import android.widget.Toast
 import com.fashol.seller.R
 import com.fashol.seller.databinding.FragmentProductDetailsBinding
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
+import com.fashol.seller.utilits.Utils
+import com.squareup.picasso.Picasso
 
 class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
 
@@ -40,6 +42,9 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
         val remember = sharedPreferences?.getBoolean("session", false)
         if(remember == true){
             binding.tvProductName.text = sharedPreferences.getString("productName", "....").toString()
+            val url = Utils.baseUrl() + sharedPreferences.getString("productAvatar", "").toString()
+            //load image into view
+            Picasso.get().load(url).placeholder(R.drawable.img_fruit).into(binding.ivProductImage)
         }
     }
 

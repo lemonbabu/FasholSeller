@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
 import com.fashol.seller.data.model.productdata.ProductDataModel
+import com.fashol.seller.utilits.Utils
+import com.squareup.picasso.Picasso
 
 class ProductAdapter(private var onItemClickListener: OnProductClickListener): RecyclerView.Adapter<ProductAdapter.MyViewHolder>() {
 
-    private var productList: ArrayList<ProductDataModel> = ArrayList()
+    private var productList: ArrayList<ProductDataModel.Result> = ArrayList()
 
-    fun submitList(list: List<ProductDataModel>) {
+    fun submitList(list: List<ProductDataModel.Result>) {
         val oldList = productList
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             BookDiffCallBack(
@@ -23,7 +25,7 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
                 list
             )
         )
-        productList = list as ArrayList<ProductDataModel>
+        productList = list as ArrayList<ProductDataModel.Result>
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -42,14 +44,12 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
         val product = productList[position]
 
         holder.name.text = product.name
-        holder.avatar.setImageResource(R.drawable.img_fruit)
-
-        //val avatar = customer.avatar
+        val url = Utils.baseUrl() + product.image_path
         //load image into view
-        //Picasso.get().load(avatar).fit().into(holder.avatar)
+        Picasso.get().load(url).placeholder(R.drawable.img_fruit).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
-            onItemClickListener.onProductClickListener(product.id, product.name, product.avatar)
+            onItemClickListener.onProductClickListener(product.id, product.name, product.image_path)
         }
     }
 
@@ -58,8 +58,8 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
     }
 
     class BookDiffCallBack(
-        private var oldProductList: List<ProductDataModel>,
-        private var newProductList: List<ProductDataModel>
+        private var oldProductList: List<ProductDataModel.Result>,
+        private var newProductList: List<ProductDataModel.Result>
     ): DiffUtil.Callback(){
 
         override fun getOldListSize(): Int {
@@ -75,12 +75,12 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldProductList[oldItemPosition].equals(newProductList[newItemPosition])
+            return oldProductList[oldItemPosition] == newProductList[newItemPosition]
         }
     }
 
     interface OnProductClickListener{
-        fun onProductClickListener(id: String, name: String, avatar: String)
+        fun onProductClickListener(id: Int, name: String, avatar: String)
     }
 
 }

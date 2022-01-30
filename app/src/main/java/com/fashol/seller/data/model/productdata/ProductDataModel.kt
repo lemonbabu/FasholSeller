@@ -1,32 +1,39 @@
 package com.fashol.seller.data.model.productdata
 
-
 class ProductDataModel (
-    var id: String,
-    var avatar: String,
-    var name: String
+    var error: Boolean, // false
+    var message: String, // Product Successfully Fetch!
+    var result: List<Result>,
+    var success: Boolean // true
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (javaClass != other?.javaClass){
-            return false
-        }
-        other as ProductDataModel
-        if (id != other.id){
-            return false
-        }
-        if (avatar != other.avatar){
-            return false
-        }
-        if (name != other.name){
-            return false
-        }
-        return true
-    }
+    data class Result(
+        var category: Category,
+        var category_id: Int, // 1
+        var description: String, // Repellendus nihil vitae similique accusantium illum. Consequatur odio quidem non. Magnam rem omnis ullam. Laudantium aut nihil quasi. Et omnis magnam et.
+        var id: Int, // 1
+        var image_path: String, // https://via.placeholder.com/200x200.png/009944?text=est
+        var name: String, // deserunt
+        var packaging_unit: String, // 74.44
+        var sku: String, // SKU-3519
+        var tags: List<String>,
+        var unit: Unit,
+        var unit_id: Int, // 1
+        var variants: List<Variant>
+    ) {
+        data class Category(
+            var id: Int, // 1
+            var image: String, // /defaults/vagitable.jpeg
+            var name: String // Vagitables
+        )
 
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + avatar.hashCode()
-        result = 31 * result + name.hashCode()
-        return result
+        data class Unit(
+            var id: Int, // 1
+            var name: String // kg
+        )
+
+        data class Variant(
+            var id: Int, // 69
+            var name: String // voluptatem
+        )
     }
 }

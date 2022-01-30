@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
 import com.fashol.seller.data.model.productdata.CategoryDataModel
+import com.fashol.seller.utilits.Utils
+import com.squareup.picasso.Picasso
 
 class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener): RecyclerView.Adapter<CategoryAdapter.MyViewHolder>(){
-    private var customerList: ArrayList<CategoryDataModel> = ArrayList()
+    private var customerList: ArrayList<CategoryDataModel.Result> = ArrayList()
 
-    fun submitList(list: List<CategoryDataModel>){
+    fun submitList(list: List<CategoryDataModel.Result>){
         val oldList = customerList
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             BookDiffCallBack(
@@ -21,7 +23,7 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
                 list
             )
         )
-        customerList = list as ArrayList<CategoryDataModel>
+        customerList = list as ArrayList<CategoryDataModel.Result>
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -36,12 +38,12 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
         holder.name.text = customer.name
        // holder.avatar.setImageResource(R.drawable.img_fruit)
 
-        //val avatar = customer.avatar
-        //load image into view
-        //Picasso.get().load(avatar).fit().into(holder.avatar)
+        val url = Utils.baseUrl() + customer.image
+        // load image into view
+        Picasso.get().load(url).placeholder(R.drawable.img_fruit).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
-            onItemClickListener.onCustomerClickListener(customerList[position].id, customerList[position].name, customerList[position].avatar)
+            onItemClickListener.onCustomerClickListener(customer.id, customer.name, customer.image)
         }
     }
 
@@ -55,8 +57,8 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
     }
 
     class BookDiffCallBack(
-        private var oldCustomerList: List<CategoryDataModel>,
-        private var newCustomerList: List<CategoryDataModel>
+        private var oldCustomerList: List<CategoryDataModel.Result>,
+        private var newCustomerList: List<CategoryDataModel.Result>
     ): DiffUtil.Callback(){
 
         override fun getOldListSize(): Int {
@@ -72,12 +74,12 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldCustomerList[oldItemPosition].equals(newCustomerList[newItemPosition])
+            return oldCustomerList[oldItemPosition] == newCustomerList[newItemPosition]
         }
 
     }
 
     interface OnCustomerClickListener{
-        fun onCustomerClickListener(id: String, name: String, avatar: String)
+        fun onCustomerClickListener(id: Int, name: String, avatar: String)
     }
 }
