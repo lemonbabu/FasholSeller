@@ -34,20 +34,8 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
 
       binding.pbLoading.visibility = View.VISIBLE
       binding.rvTopCustomer.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-      binding.rvCustomers.layoutManager = GridLayoutManager(context, 4)
       customerAdapter = CustomerAdapter(this)
 
-
-
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Md Rasel"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Motalib", "Motalib"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Ruhul Amin"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Mehedi Hasan"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Motalib", "Samira Begum"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Amjad Hosen"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Md Rasel"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Motalib", "Motalib"))
-//      customerData.add(CustomerDataModel.Result("1", "Md Rasel", "Ruhul Amin"))
 
       getAllCustomerList()
 
@@ -91,7 +79,7 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
          }catch (e: Exception) {
             Log.d(" Error Customer ", e.toString())
             withContext(Dispatchers.Main) {
-               Toast.makeText(context,"Internet Connection is not stable!!", Toast.LENGTH_SHORT).show()
+               Toast.makeText(context,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
                binding.pbLoading.visibility = View.GONE
             }
          }

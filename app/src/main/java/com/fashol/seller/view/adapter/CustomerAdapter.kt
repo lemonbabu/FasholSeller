@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
 
@@ -40,9 +41,11 @@ class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener):
         val url = Utils.baseUrl() +  customer.profile_pic
 
        // load image into view
-        Picasso.get().load(url).into(holder.avatar)
+        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
+            CartData.customerId = customer.id.toString()
+            CartData.customerName = customer.name
             onItemClickListener.onCustomerClickListener(customer.id, customer.name, customer.profile_pic)
         }
     }

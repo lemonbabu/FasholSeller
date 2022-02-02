@@ -90,7 +90,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="60dp"
-        android:src="@drawable/user_avatar"
+        android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

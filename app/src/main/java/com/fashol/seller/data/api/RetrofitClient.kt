@@ -41,13 +41,22 @@ object RetrofitClient {
         return retrofit.create(ApiInterfaces.ProductListInterface::class.java)
     }
 
-    //retrofit builder for get Product List
+    //retrofit builder for get Order List
     fun getOrderList(): ApiInterfaces.OrderListInterface {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(URLGlobal)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         return retrofit.create(ApiInterfaces.OrderListInterface::class.java)
+    }
+
+    //retrofit builder for get Product Details
+    fun getProductDetails(): ApiInterfaces.ProductDetailsInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.ProductDetailsInterface::class.java)
     }
 
 }

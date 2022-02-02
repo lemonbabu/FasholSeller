@@ -22,7 +22,7 @@ import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
 @DelicateCoroutinesApi
-class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdapter.OnCustomerClickListener, ProductAdapter.OnProductClickListener {
+class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdapter.OnCategoryClickListener, ProductAdapter.OnProductClickListener {
 
     private lateinit var binding: FragmentAddProductBinding
     private lateinit var fcpopup: PopUpFragmentCommunicator
@@ -48,7 +48,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
 
     }
 
-    override fun onCustomerClickListener(id: Int, name: String, avatar: String) {
+    override fun onCategoryClickListener(id: Int, name: String, avatar: String) {
         //
     }
 
@@ -57,11 +57,14 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         val editor = sharedPreferences?.edit()
         editor?.apply{
             putBoolean("session", true)
+            putInt("productId", id)
             putString("productName", name)
             putString("productAvatar", avatar)
         }?.apply()
 
         fcpopup.passPopUpData("productDetails")
+        binding.rvProducts.isEnabled = false
+        binding.rvProducts.isClickable = false
     }
 
     private fun loadCategory(){
@@ -71,7 +74,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                 withContext(Dispatchers.Main){
                     Log.d("Category List: ",  response.toString())
                     if (response.body()?.success == true){
-                        Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
                             categoryAdapter.submitList(it)
                             binding.rvCategory.adapter = categoryAdapter
@@ -98,7 +101,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                 withContext(Dispatchers.Main){
                     Log.d("Product List: ",  response.toString())
                     if (response.body()?.success == true){
-                        Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
                             productAdapter.submitList(it)
                             binding.rvProducts.adapter = productAdapter

@@ -46,7 +46,7 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
         holder.name.text = product.name
         val url = Utils.baseUrl() + product.image_path
         //load image into view
-        Picasso.get().load(url).placeholder(R.drawable.img_fruit).into(holder.avatar)
+        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onProductClickListener(product.id, product.name, product.image_path)

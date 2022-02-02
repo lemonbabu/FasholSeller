@@ -1,5 +1,6 @@
 package com.fashol.seller.view.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.fashol.seller.view.ui.fragment.user.UserProfileFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_header.view.*
 import com.fashol.seller.R
+import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
 import com.fashol.seller.view.ui.fragment.notice.NoticeListFragment
@@ -228,8 +230,10 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
     }
 
     override fun onBackPressed() {
-        if(pressBack){
+        if(pressBack && !binding.fcPopUp.isVisible){
             menuHome()
+        }else if(pressBack && binding.fcPopUp.isVisible){
+            binding.fcPopUp.visibility = View.GONE
         }else{
             android.app.AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -258,6 +262,8 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             "productDetails" -> productDetails()
             "close" -> {
                 binding.fcPopUp.visibility = View.GONE
+                binding.cartFooter.layoutCartFooter.visibility = View.VISIBLE
+                binding.cartFooter.layoutCartFooter.visibility = View.VISIBLE
                 loadProductData()
             }
             "CartShow" ->{
@@ -273,11 +279,14 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
 
     private fun productDetails(){
         binding.fcPopUp.visibility = View.VISIBLE
+        binding.fcvMain.isEnabled = false
+        binding.cartFooter.layoutCartFooter.visibility = View.GONE
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_pop_exit_anim)
         fragmentTransaction.replace(R.id.fcPopUp, ProductDetailsFragment())
         fragmentTransaction.commit()
+
 
 //        val sharedPreferences: SharedPreferences = getSharedPreferences("Cart", Context.MODE_PRIVATE)
 //        val remember = sharedPreferences.getBoolean("session", false)
@@ -287,16 +296,20 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadProductData(){
+        binding.titleBar.tvCustomerName.text = CartData.customerName
+        binding.titleBar.tvChartNumberOfItem.text = CartData.totalItem.toString()
+        binding.cartFooter.tvNumberOfItem.text = CartData.totalItem.toString()
+        binding.cartFooter.tvTotalPrice.text = CartData.totalAmount.toString() + " " + getString(R.string.taka)
         val sharedPreferences: SharedPreferences = getSharedPreferences("Cart", Context.MODE_PRIVATE)
         val remember = sharedPreferences.getBoolean("session", false)
         if(remember){
             binding.titleBar.tvCustomerName.text = sharedPreferences.getString("customerName", "")
-            binding.titleBar.tvChartNumberOfItem.text = sharedPreferences.getInt("cartItem", 0).toString()
             val url = Utils.baseUrl() +  sharedPreferences.getString("customerAvatar", " ").toString()
 
             // load image into view
-            Picasso.get().load(url).placeholder(R.drawable.user_avatar).into(binding.titleBar.ivCustomerAvatar)
+            Picasso.get().load(url).placeholder(R.drawable.placeholder).into(binding.titleBar.ivCustomerAvatar)
         }
     }
 

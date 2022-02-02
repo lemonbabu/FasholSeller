@@ -12,7 +12,7 @@ import com.fashol.seller.data.model.productdata.CategoryDataModel
 import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
 
-class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener): RecyclerView.Adapter<CategoryAdapter.MyViewHolder>(){
+class CategoryAdapter(private var onItemClickListener: OnCategoryClickListener): RecyclerView.Adapter<CategoryAdapter.MyViewHolder>(){
     private var customerList: ArrayList<CategoryDataModel.Result> = ArrayList()
 
     fun submitList(list: List<CategoryDataModel.Result>){
@@ -40,10 +40,10 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
 
         val url = Utils.baseUrl() + customer.image
         // load image into view
-        Picasso.get().load(url).placeholder(R.drawable.img_fruit).into(holder.avatar)
+        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
-            onItemClickListener.onCustomerClickListener(customer.id, customer.name, customer.image)
+            onItemClickListener.onCategoryClickListener(customer.id, customer.name, customer.image)
         }
     }
 
@@ -79,7 +79,7 @@ class CategoryAdapter(private var onItemClickListener: OnCustomerClickListener):
 
     }
 
-    interface OnCustomerClickListener{
-        fun onCustomerClickListener(id: Int, name: String, avatar: String)
+    interface OnCategoryClickListener{
+        fun onCategoryClickListener(id: Int, name: String, avatar: String)
     }
 }

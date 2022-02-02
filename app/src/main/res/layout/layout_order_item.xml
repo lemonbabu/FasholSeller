@@ -12,17 +12,22 @@
     app:cardUseCompatPadding="true"
     tools:targetApi="p">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100"
         android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/tvOrderNumber"
             android:layout_width="0dp"
+            android:layout_weight="35"
             android:layout_height="wrap_content"
             android:text="@string/f_od234982"
-            android:textSize="16sp"
+            android:textSize="15sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,12 +35,13 @@
         <TextView
             android:id="@+id/tvCustomerName"
             android:layout_width="0dp"
+            android:layout_weight="35"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/bbq_restaurant"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@+id/ibOrderDetails"
             app:layout_constraintStart_toStartOf="@+id/tvOrderNumber"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,18 +49,21 @@
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="0dp"
+            android:layout_weight="20"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@string/_2000"
-            android:textSize="16sp"
             android:textAlignment="viewEnd"
-            app:layout_constraintEnd_toEndOf="@+id/tvOrderNumber"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/ibOrderDetails"
             app:layout_constraintStart_toStartOf="@+id/tvOrderNumber"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/ibOrderDetails"
-            android:layout_width="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="wrap_content"
             android:background="@null"
             android:contentDescription="@string/setting"
@@ -62,6 +71,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>

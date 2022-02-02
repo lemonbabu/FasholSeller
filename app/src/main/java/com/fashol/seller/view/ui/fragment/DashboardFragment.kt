@@ -52,7 +52,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 withContext(Dispatchers.Main){
                     Log.d("Order List: ",  response.toString())
                     if (response.body()?.success == true){
-                        Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
                             orderListAdapter.submitList(it)
                             binding.rvOrderList.adapter = orderListAdapter
@@ -65,7 +65,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }catch (e: Exception) {
                 Log.d(" Error Order List ", e.toString())
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context,"Internet Connection is not stable!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Server not response some error occur!!", Toast.LENGTH_SHORT).show()
                     binding.pbLoading.visibility = View.GONE
                 }
             }
