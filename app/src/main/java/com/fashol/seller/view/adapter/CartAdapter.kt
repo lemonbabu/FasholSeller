@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
-import com.fashol.seller.data.model.productdata.CartItemDataModel
+import com.fashol.seller.data.model.orderdata.CartItemDataModel
 import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
 

@@ -1,4 +1,4 @@
-package com.fashol.seller.data.model.productdata
+package com.fashol.seller.data.model.orderdata
 
 class CartItemDataModel(
     var id : String,
@@ -7,5 +7,6 @@ class CartItemDataModel(
     var unitPrice: Double,
     var quantity: Int,
     var variant: String,
+    var variantId: Int
 ) {
 }

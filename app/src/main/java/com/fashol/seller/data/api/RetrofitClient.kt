@@ -59,6 +59,24 @@ object RetrofitClient {
         return retrofit.create(ApiInterfaces.ProductDetailsInterface::class.java)
     }
 
+    //retrofit builder for create Order
+    fun newOrder(): ApiInterfaces.CreateOrderInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.CreateOrderInterface::class.java)
+    }
+
+    //retrofit builder for create new customer
+    fun createNewCustomer(): ApiInterfaces.CreateCustomerInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.CreateCustomerInterface::class.java)
+    }
+
 }
 
 

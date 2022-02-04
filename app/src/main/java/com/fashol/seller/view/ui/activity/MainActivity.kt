@@ -4,8 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -25,13 +29,25 @@ import com.fashol.seller.view.ui.fragment.user.UserProfileFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_header.view.*
 import com.fashol.seller.R
+import com.fashol.seller.data.api.ApiInterfaces
+import com.fashol.seller.data.api.RetrofitClient
+import com.fashol.seller.data.model.orderdata.CreateOrderRequestDataModel
+import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
 import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
+import com.fashol.seller.view.ui.fragment.customer.CustomerListFragment
 import com.fashol.seller.view.ui.fragment.notice.NoticeListFragment
 import com.fashol.seller.view.ui.fragment.order.OrderConfirmationFragment
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.android.synthetic.main.fragment_product_details.*
+import kotlinx.coroutines.*
+import org.json.JSONArray
+import org.json.JSONObject
+import retrofit2.awaitResponse
 
 
 @DelicateCoroutinesApi
@@ -39,14 +55,14 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
 
     private lateinit var binding: ActivityMainBinding
     private var pressBack = false
+    private var customerFlag = true
+    private val orderApi: ApiInterfaces.CreateOrderInterface by lazy { RetrofitClient.newOrder() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fullScreen(this)
-
-        //Navigation view
 
         //Navigation view
         val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -57,7 +73,14 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         menuHome()
 
         binding.titleBar.btnNewOrder.setOnClickListener {
-            selectCustomer()
+            customerFlag = if(customerFlag){
+                selectCustomer()
+                false
+            } else{
+                addNewCustomer()
+                true
+            }
+
         }
 
         binding.titleBar.btnOpenMenu.setOnClickListener {
@@ -105,7 +128,36 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         }
 
         binding.cartFooter.btnOrderSubmit.setOnClickListener {
-            orderConfirmationPage()
+            if(CartData.totalItem == 0)
+            {
+                Toast.makeText(applicationContext, "Please add Product first?!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else{
+                binding.pbLoading.visibility = View.VISIBLE
+
+                val list  = JsonArray()
+
+                for (item in CartData.cartData){
+                    val p = JsonObject()
+                    p.addProperty("product_id", item.id.toInt())
+                    p.addProperty("variant_id", item.variantId)
+                    p.addProperty("quantity", item.quantity.toDouble())
+                    p.addProperty("note", "")
+                    p.addProperty("status", "add")
+                    list.add(p)
+                }
+
+                val body = JsonObject()
+                body.addProperty("assigned_by",2)
+                body.addProperty("customer_id",CartData.customerId)
+                body.addProperty("note",CartData.orderNote)
+                body.add("order_lists", list)
+
+                Log.d("Body ", body.toString())
+                orderApi(body)
+                //orderConfirmationPage()
+            }
+
         }
 
 
@@ -121,6 +173,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             "deliveryList" -> {
             }
             "CustomerProfile" -> userProfile()
+            "CustomerList" -> customerList()
             "Dashboard" -> menuHome()
             "OrderList" -> orderList()
             "ProductPage" -> productPage()
@@ -182,6 +235,15 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding.titleBar.txtTitle.text = resources.getString(R.string.notice_board)
     }
 
+    private fun customerList(){
+        replaceFragment(CustomerListFragment())
+        binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.visibility = View.VISIBLE
+        binding.titleBar.btnNewOrder.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.customer_list)
+        customerFlag = false
+    }
+
     private fun orderConfirmationPage(){
         replaceFragment(OrderConfirmationFragment())
         binding.titleBar.btnOpenMenu.visibility = View.VISIBLE
@@ -199,6 +261,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         pressBack = true
         binding.titleBar.btnBack.visibility = View.VISIBLE
         binding.titleBar.txtTitle.visibility = View.VISIBLE
+        binding.titleBar.btnNewOrder.visibility = View.VISIBLE
         binding.titleBar.txtTitle.text = resources.getString(R.string.select_customer)
     }
 
@@ -210,6 +273,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         fragmentTransaction.commit()
 
         pressBack = true
+        customerFlag = true
         binding.cartFooter.layoutCartFooter.visibility = View.GONE
         binding.titleBar.btnFilter.visibility = View.GONE
         binding.titleBar.btnBack.visibility = View.GONE
@@ -251,7 +315,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             R.id.nav_order -> orderList()
             R.id.nav_logout -> logout()
             R.id.nav_user_profile -> userProfile()
-            R.id.nav_customer -> addNewCustomer()
+            R.id.nav_customer -> customerList()
             R.id.nav_notice -> noticeListPage()
         }
         return true
@@ -327,4 +391,31 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         fragmentTransaction.commit()
     }
 
+    private fun orderApi(body: JsonObject){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = orderApi.setNewOrder(body, "Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            Log.d("Order Confirmed: ",  it.toString())
+                            orderConfirmationPage()
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }catch (e: Exception) {
+                Log.d(" Error to Order ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(applicationContext,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }
+        }
+    }
+
 }
+

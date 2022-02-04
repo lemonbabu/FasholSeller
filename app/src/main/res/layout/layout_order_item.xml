@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="5dp"
+    android:layout_marginVertical="1dp"
     app:cardElevation="1dp"
     android:outlineSpotShadowColor="@color/red"
     android:outlineAmbientShadowColor="@color/red"
@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="100"
-        android:layout_margin="10dp">
+        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="10dp">
 
         <TextView
             android:id="@+id/tvOrderNumber"
@@ -63,13 +64,15 @@
         <ImageButton
             android:id="@+id/ibOrderDetails"
             android:layout_width="0dp"
-            android:layout_weight="10"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_gravity="end"
             android:background="@null"
             android:contentDescription="@string/setting"
             android:src="@drawable/ic_circle_details_21"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,ImageContrastCheck,ImageContrastCheck" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -61,7 +61,7 @@
     <string name="item_price">দাম: ২৫ * ৫ = ১২৫ tk</string>
     <string name="variant_">ভারিয়েন্ট :</string>
     <string name="quantity_">পরিমাণ :</string>
-    <string name="note">Note</string>
+    <string name="note">Note: </string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="item">Item:</string>
     <string name="_20">20</string>
@@ -101,5 +101,6 @@
     <string name="total_bangala">মোট :</string>
     <string name="no_item_in_cart">No item in Cart</string>
     <string name="_variant">(Variant)</string>
+    <string name="write_spacial_requirements">Write spacial requirements</string>
 
 </resources>

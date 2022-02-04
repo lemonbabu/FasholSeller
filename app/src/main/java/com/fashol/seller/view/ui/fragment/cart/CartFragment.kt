@@ -2,11 +2,9 @@ package com.fashol.seller.view.ui.fragment.cart
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import com.fashol.seller.R
-import com.fashol.seller.data.model.productdata.CartItemDataModel
 import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.databinding.FragmentCartBinding
 import com.fashol.seller.view.adapter.CartAdapter
@@ -18,6 +16,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCartBinding.bind(view)
+
+
+        binding.etOrderNote.addTextChangedListener {
+            CartData.orderNote = it.toString().trim()
+        }
 
         cartAdapter = CartAdapter()
         if(CartData.totalItem == 0){
@@ -37,5 +40,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         binding.rvCart.adapter = cartAdapter
 
     }
+
 
 }

@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.productdata.CartItemDataModel
+import com.fashol.seller.data.model.orderdata.CartItemDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
 import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.databinding.FragmentProductDetailsBinding
@@ -38,7 +38,7 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
     private lateinit var listAdapter : ArrayAdapter<String>
     private var variantAdapter : ArrayList<ProductDetailsDataModel.Result.Variant> = arrayListOf()
     private var cartData: ArrayList<CartItemDataModel> = arrayListOf()
-    private var count: Int = 0
+    private var vList: ArrayList<ProductDetailsDataModel.Result.Variant> = arrayListOf()
     private var avatarLink = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,6 +129,7 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
                         response.body()?.result?.let {
                             Log.d("Product variant List: ",  it.variants.toString())
                             variantAdapter = it.variants as ArrayList<ProductDetailsDataModel.Result.Variant>
+                            vList = it.variants as ArrayList<ProductDetailsDataModel.Result.Variant>
                             val variantList = arrayListOf<String>()
                             for(item in it.variants){
                                 variantList.add(item.name)
@@ -152,7 +153,12 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
     }
 
     private fun addItemInCart(){
-
+        var variantId = 0
+        for (item in vList){
+            if((lstVariant.editText as AutoCompleteTextView).text.toString().trim() == item.name){
+                variantId = item.id
+            }
+        }
         CartData.totalItem = CartData.totalItem +  1
         CartData.cartData.add(
             CartItemDataModel(productId.toString(),
@@ -160,7 +166,8 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
             avatarLink,
             binding.tvProductPrice.text.toString().trim().toDouble(),
             binding.etProductQuantity.text.toString().trim().toInt(),
-            (lstVariant.editText as AutoCompleteTextView).text.toString().trim())
+            (lstVariant.editText as AutoCompleteTextView).text.toString().trim(),
+            variantId)
         )
         CartData.totalAmount = CartData.totalAmount + (binding.tvProductPrice.text.toString().trim().toDouble() * binding.etProductQuantity.text.toString().trim().toInt())
 

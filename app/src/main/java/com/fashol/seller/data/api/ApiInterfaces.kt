@@ -1,14 +1,16 @@
 package com.fashol.seller.data.api
 
+import com.fashol.seller.data.model.customerdata.CreateCustomerResponse
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.model.orderdata.OrderConfirmationResponse
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.data.model.productdata.CategoryDataModel
 import com.fashol.seller.data.model.productdata.ProductDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
+import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface ApiInterfaces{
@@ -62,5 +64,41 @@ interface ApiInterfaces{
             @Header("Authorization") auth: String,
         ): Call<ProductDetailsDataModel>
     }
+
+    // Product details interface
+    interface CreateOrderInterface{
+        @POST("v1/sales-executive/orders")
+        fun setNewOrder(
+            @Body jsonBody: JsonObject,
+            @Header("Authorization") auth: String,
+        ): Call<OrderConfirmationResponse>
+    }
+
+    // Crate Customer interface
+    interface CreateCustomerInterface{
+        @FormUrlEncoded
+        //@Multipart
+        @POST("common-api/customers")
+        fun createNewCustomer(
+            @Field("name") name: String,
+            @Field("phone") phone: String,
+            @Field("store_address") storeAddress: String,
+            @Field("store_name") storeName: String,
+            //@Field("address") address: String,
+            //@Field("status") status: String,
+            @Field("zone_id") zoneId: Int,
+            //@Part("profile_pic") profilePic: MultipartBody.Part,
+            //@Part("store_image") storeImage: MultipartBody.Part,
+            //@Part("nid_frontpart") nidFrontPart: MultipartBody.Part,
+            //@Part("nid_backpart") nidBackPart: MultipartBody.Part,
+            @Field("nid_number") nidNumber: String,
+            @Field("dob") dob: String,
+            //@Field("address_line_1") addressLine1: String,
+            //@Field("address_line_2") addressLine2: String,
+            //@Field("geo_location") geoLocation: String,
+            @Header("Authorization") auth: String,
+        ): Call<CreateCustomerResponse>
+    }
+
 
 }
