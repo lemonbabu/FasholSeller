@@ -39,6 +39,7 @@ import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
 import com.fashol.seller.view.ui.fragment.customer.CustomerListFragment
 import com.fashol.seller.view.ui.fragment.notice.NoticeListFragment
 import com.fashol.seller.view.ui.fragment.order.OrderConfirmationFragment
+import com.fashol.seller.view.ui.fragment.order.OrderDetailsFragment
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -176,6 +177,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             "CustomerList" -> customerList()
             "Dashboard" -> menuHome()
             "OrderList" -> orderList()
+            "OrderDetails" -> orderDetails()
             "ProductPage" -> productPage()
             "NoticeList" -> noticeListPage()
             else -> {
@@ -200,6 +202,14 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding.titleBar.btnBack.visibility = View.VISIBLE
         binding.titleBar.txtTitle.visibility = View.VISIBLE
         binding.titleBar.txtTitle.text = resources.getString(R.string.order_list)
+    }
+
+    private fun orderDetails(){
+        replaceFragment(OrderDetailsFragment())
+        binding.titleBar.btnFilter.visibility = View.VISIBLE
+        binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.order_detail)
     }
 
     private fun userProfile() {

@@ -13,17 +13,17 @@ import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
 
 class CategoryAdapter(private var onItemClickListener: OnCategoryClickListener): RecyclerView.Adapter<CategoryAdapter.MyViewHolder>(){
-    private var customerList: ArrayList<CategoryDataModel.Result> = ArrayList()
+    private var categoryList: ArrayList<CategoryDataModel.Result> = ArrayList()
 
     fun submitList(list: List<CategoryDataModel.Result>){
-        val oldList = customerList
+        val oldList = categoryList
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             BookDiffCallBack(
                 oldList,
                 list
             )
         )
-        customerList = list as ArrayList<CategoryDataModel.Result>
+        categoryList = list as ArrayList<CategoryDataModel.Result>
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -33,22 +33,22 @@ class CategoryAdapter(private var onItemClickListener: OnCategoryClickListener):
     }
 
     override fun onBindViewHolder(holder: CategoryAdapter.MyViewHolder, position: Int) {
-        val customer = customerList[position]
+        val category = categoryList[position]
 
-        holder.name.text = customer.name
+        holder.name.text = category.name
        // holder.avatar.setImageResource(R.drawable.img_fruit)
 
-        val url = Utils.baseUrl() + customer.image
+        val url = Utils.baseUrl() + category.image
         // load image into view
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
 
         holder.itemView.setOnClickListener {
-            onItemClickListener.onCategoryClickListener(customer.id, customer.name, customer.image)
+            onItemClickListener.onCategoryClickListener(category.id)
         }
     }
 
     override fun getItemCount(): Int {
-        return customerList.size
+        return categoryList.size
     }
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -57,29 +57,29 @@ class CategoryAdapter(private var onItemClickListener: OnCategoryClickListener):
     }
 
     class BookDiffCallBack(
-        private var oldCustomerList: List<CategoryDataModel.Result>,
-        private var newCustomerList: List<CategoryDataModel.Result>
+        private var oldCategoryList: List<CategoryDataModel.Result>,
+        private var newCategoryList: List<CategoryDataModel.Result>
     ): DiffUtil.Callback(){
 
         override fun getOldListSize(): Int {
-            return oldCustomerList.size
+            return oldCategoryList.size
         }
 
         override fun getNewListSize(): Int {
-            return newCustomerList.size
+            return newCategoryList.size
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return (oldCustomerList[oldItemPosition].id == newCustomerList[newItemPosition].id)
+            return (oldCategoryList[oldItemPosition].id == newCategoryList[newItemPosition].id)
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldCustomerList[oldItemPosition] == newCustomerList[newItemPosition]
+            return oldCategoryList[oldItemPosition] == newCategoryList[newItemPosition]
         }
 
     }
 
     interface OnCategoryClickListener{
-        fun onCategoryClickListener(id: Int, name: String, avatar: String)
+        fun onCategoryClickListener(id: Int)
     }
 }

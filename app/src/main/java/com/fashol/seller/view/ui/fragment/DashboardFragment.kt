@@ -18,7 +18,7 @@ import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
 @DelicateCoroutinesApi
-class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapter.OnOrderClickListener {
 
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var fc: MainFragmentCommunicator
@@ -31,7 +31,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         fc = activity as MainFragmentCommunicator
 
         binding.rvOrderList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        orderListAdapter = OrderListAdapter()
+        orderListAdapter = OrderListAdapter(this)
 
         binding.tvAllOrder.setOnClickListener {
             fc.passData("OrderList")
@@ -70,6 +70,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 }
             }
         }
+    }
+
+    override fun onOrderClickListener() {
+        fc.passData("OrderDetails")
     }
 
 }

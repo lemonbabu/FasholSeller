@@ -47,6 +47,16 @@ interface ApiInterfaces{
         ): Call<ProductDataModel>
     }
 
+    // Product List bu category interface
+    interface ProductListByCategoryInterface{
+        @GET("common-api/category/{id}")
+        fun getProductListByCategory(
+            @Path("id") id : Int,
+            @Header("Authorization") auth: String,
+        ): Call<ProductDataModel>
+    }
+
+
     // Order List interface
     interface OrderListInterface{
         @GET("v1/sales-executive/orders")

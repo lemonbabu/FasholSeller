@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.productdata.CategoryDataModel
-import com.fashol.seller.data.model.productdata.ProductDataModel
 import com.fashol.seller.databinding.FragmentAddProductBinding
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
 import com.fashol.seller.utilits.Utils
@@ -25,16 +23,17 @@ import retrofit2.awaitResponse
 class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdapter.OnCategoryClickListener, ProductAdapter.OnProductClickListener {
 
     private lateinit var binding: FragmentAddProductBinding
-    private lateinit var fcpopup: PopUpFragmentCommunicator
+    private lateinit var fcPopUp: PopUpFragmentCommunicator
     private lateinit var productAdapter: ProductAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private val categoryApi: ApiInterfaces.CategoryListInterface by lazy { RetrofitClient.getCategoryList() }
     private val productApi: ApiInterfaces.ProductListInterface by lazy { RetrofitClient.getProductList() }
+    private val productByCategoryApi: ApiInterfaces.ProductListByCategoryInterface by lazy { RetrofitClient.getProductListByCategory() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAddProductBinding.bind(view)
-        fcpopup = activity as PopUpFragmentCommunicator
+        fcPopUp = activity as PopUpFragmentCommunicator
 
         binding.pbLoading.visibility = View.VISIBLE
         binding.rvProducts.layoutManager = GridLayoutManager(context, 3)
@@ -48,8 +47,9 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
 
     }
 
-    override fun onCategoryClickListener(id: Int, name: String, avatar: String) {
-        //
+    override fun onCategoryClickListener(id: Int) {
+        binding.pbLoading.visibility = View.VISIBLE
+        loadProductByCategory(id)
     }
 
     override fun onProductClickListener(id: Int, name: String, avatar: String) {
@@ -62,7 +62,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
             putString("productAvatar", avatar)
         }?.apply()
 
-        fcpopup.passPopUpData("productDetails")
+        fcPopUp.passPopUpData("productDetails")
         binding.rvProducts.isEnabled = false
         binding.rvProducts.isClickable = false
     }
@@ -87,7 +87,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
             }catch (e: Exception) {
                 Log.d(" Error Category ", e.toString())
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context,"Internet Connection is not stable!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
                     binding.pbLoading.visibility = View.GONE
                 }
             }
@@ -114,7 +114,35 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
             }catch (e: Exception) {
                 Log.d(" Error Product ", e.toString())
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context,"Internet Connection is not stable!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun loadProductByCategory(id : Int){
+        Log.d("Category Id ", id.toString())
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = productByCategoryApi.getProductListByCategory( id, "Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    Log.d("Product List: ",  response.toString())
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            productAdapter.submitList(it)
+                            binding.rvProducts.adapter = productAdapter
+                        }
+                    }else{
+                        Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }catch (e: Exception) {
+                Log.d(" Error Product cat ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
                     binding.pbLoading.visibility = View.GONE
                 }
             }

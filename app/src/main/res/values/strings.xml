@@ -13,6 +13,7 @@
     <string name="_230">230</string>
     <string name="all_order">All Order</string>
     <string name="order_list">Order List</string>
+    <string name="order_detail">Order Details</string>
     <string name="order_number">Order Number</string>
     <string name="t_price">T. Price</string>
     <string name="customer">Customer</string>

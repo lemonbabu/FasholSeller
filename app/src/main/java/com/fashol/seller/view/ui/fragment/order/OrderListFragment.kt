@@ -12,25 +12,28 @@ import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.model.orderdata.OrderDataModel
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.databinding.FragmentOrderListBinding
+import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.view.adapter.OrderListAdapter
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
 @DelicateCoroutinesApi
-class OrderListFragment : Fragment(R.layout.fragment_order_list) {
+class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapter.OnOrderClickListener {
 
     private lateinit var binding: FragmentOrderListBinding
+    private lateinit var fc: MainFragmentCommunicator
     private lateinit var orderListAdapter: OrderListAdapter
     private val orderListApi: ApiInterfaces.OrderListInterface by lazy { RetrofitClient.getOrderList() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentOrderListBinding.bind(view)
+        fc = activity as MainFragmentCommunicator
 
         binding.pbLoading.visibility = View.GONE
         binding.rvOrderList.layoutManager = GridLayoutManager(context,1)
-        orderListAdapter = OrderListAdapter()
+        orderListAdapter = OrderListAdapter(this)
 
 
         loadOrderList()
@@ -62,6 +65,10 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list) {
                 }
             }
         }
+    }
+
+    override fun onOrderClickListener() {
+        fc.passData("OrderDetails")
     }
 
 }

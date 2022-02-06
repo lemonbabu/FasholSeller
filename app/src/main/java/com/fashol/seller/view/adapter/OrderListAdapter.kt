@@ -3,12 +3,13 @@ package com.fashol.seller.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fashol.seller.R
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 
-class OrderListAdapter : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
+class OrderListAdapter(private var onItemClickListener: OnOrderClickListener) : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
     private var orderList: ArrayList<OrderListDataModel.Result> = ArrayList()
 
     fun submitList(list: List<OrderListDataModel.Result>){
@@ -26,6 +27,14 @@ class OrderListAdapter : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
         holder.orderId.text = order.order_no
         holder.customerName.text = order.customer.name
         holder.tPrice.text = order.status
+
+        holder.btnDetails.setOnClickListener {
+            onItemClickListener.onOrderClickListener()
+        }
+
+        holder.itemView.setOnClickListener {
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -36,6 +45,11 @@ class OrderListAdapter : RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
         var orderId: TextView = view.findViewById(R.id.tvOrderNumber)
         var customerName: TextView = view.findViewById(R.id.tvCustomerName)
         var tPrice: TextView = view.findViewById(R.id.tvPrice)
+        var btnDetails: ImageButton = view.findViewById(R.id.ibOrderDetails)
+    }
+
+    interface OnOrderClickListener{
+        fun onOrderClickListener()
     }
 
 }
