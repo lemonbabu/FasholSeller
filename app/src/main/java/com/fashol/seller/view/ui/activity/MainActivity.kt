@@ -1,5 +1,4 @@
 package com.fashol.seller.view.ui.activity
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,53 +6,41 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import com.fashol.seller.databinding.ActivityMainBinding
-import com.fashol.seller.utilits.MainFragmentCommunicator
-import com.fashol.seller.utilits.PopUpFragmentCommunicator
-import com.fashol.seller.utilits.Utils.fullScreen
-import com.fashol.seller.view.ui.fragment.DashboardFragment
-import com.fashol.seller.view.ui.fragment.order.OrderListFragment
-import com.fashol.seller.view.ui.fragment.customer.SelectCustomerFragment
-import com.fashol.seller.view.ui.fragment.cart.AddProductFragment
-import com.fashol.seller.view.ui.fragment.cart.CartFragment
-import com.fashol.seller.view.ui.fragment.cart.ProductDetailsFragment
-import com.fashol.seller.view.ui.fragment.user.UserProfileFragment
-import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.nav_header.view.*
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.orderdata.CreateOrderRequestDataModel
-import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
 import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.data.repository.local.SellerProfile
+import com.fashol.seller.databinding.ActivityMainBinding
+import com.fashol.seller.utilits.MainFragmentCommunicator
+import com.fashol.seller.utilits.PopUpFragmentCommunicator
 import com.fashol.seller.utilits.Utils
+import com.fashol.seller.utilits.Utils.fullScreen
+import com.fashol.seller.view.ui.fragment.DashboardFragment
+import com.fashol.seller.view.ui.fragment.cart.AddProductFragment
+import com.fashol.seller.view.ui.fragment.cart.CartFragment
+import com.fashol.seller.view.ui.fragment.cart.ProductDetailsFragment
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
 import com.fashol.seller.view.ui.fragment.customer.CustomerListFragment
+import com.fashol.seller.view.ui.fragment.customer.SelectCustomerFragment
 import com.fashol.seller.view.ui.fragment.notice.NoticeListFragment
 import com.fashol.seller.view.ui.fragment.order.OrderConfirmationFragment
 import com.fashol.seller.view.ui.fragment.order.OrderDetailsFragment
-import com.google.gson.Gson
+import com.fashol.seller.view.ui.fragment.order.OrderListFragment
+import com.fashol.seller.view.ui.fragment.profile.UserProfileFragment
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_product_details.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.coroutines.*
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.awaitResponse
 
 
@@ -65,7 +52,6 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
     private var pressBack = false
     private var customerFlag = true
     private val orderApi: ApiInterfaces.CreateOrderInterface by lazy { RetrofitClient.newOrder() }
-    private val sellerProfileApi: ApiInterfaces.SellerProfileInterface by lazy { RetrofitClient.getSellerProfile() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

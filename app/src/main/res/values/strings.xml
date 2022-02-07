@@ -38,7 +38,7 @@
     <string name="logout">Logout</string>
     <string name="f_od234982">F_OD234982</string>
     <string name="bbq_restaurant">BBQ Restaurant</string>
-    <string name="_2000">2000 tk</string>
+    <string name="_2000">0 tk</string>
     <string name="shop_name_sample">Vai Vai Store</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="hello">Hello</string>
@@ -103,5 +103,8 @@
     <string name="no_item_in_cart">No item in Cart</string>
     <string name="_variant">(Variant)</string>
     <string name="write_spacial_requirements">Write spacial requirements</string>
+    <string name="full_name">Full Name:</string>
+    <string name="email">Email:</string>
+    <string name="up_coming">up coming...</string>
 
 </resources>
