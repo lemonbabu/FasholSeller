@@ -67,6 +67,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         binding.rvProducts.isClickable = false
     }
 
+    // load category data from api using coroutine
     private fun loadCategory(){
         GlobalScope.launch(Dispatchers.IO) {
             try {

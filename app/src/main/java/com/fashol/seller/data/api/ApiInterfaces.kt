@@ -7,8 +7,8 @@ import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.data.model.productdata.CategoryDataModel
 import com.fashol.seller.data.model.productdata.ProductDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
+import com.fashol.seller.data.model.profile.SellerProfileDataModel
 import com.google.gson.JsonObject
-import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -63,6 +63,14 @@ interface ApiInterfaces{
         fun getOrderList(
             @Header("Authorization") auth: String,
         ): Call<OrderListDataModel>
+    }
+
+    // Seller Profile interface
+    interface SellerProfileInterface{
+        @GET("v1/sales-executive/profile")
+        fun getSellerProfile(
+            @Header("Authorization") auth: String,
+        ): Call<SellerProfileDataModel>
     }
 
     // Product details interface

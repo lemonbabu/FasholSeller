@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.fashol.seller.databinding.ActivityMainBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
@@ -34,6 +37,8 @@ import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.model.orderdata.CreateOrderRequestDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
 import com.fashol.seller.data.repository.local.CartData
+import com.fashol.seller.data.repository.local.OrderListData
+import com.fashol.seller.data.repository.local.SellerProfile
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
 import com.fashol.seller.view.ui.fragment.customer.CustomerListFragment
@@ -44,6 +49,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_product_details.*
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -55,9 +61,11 @@ import retrofit2.awaitResponse
 class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmentCommunicator, NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navHeader: View
     private var pressBack = false
     private var customerFlag = true
     private val orderApi: ApiInterfaces.CreateOrderInterface by lazy { RetrofitClient.newOrder() }
+    private val sellerProfileApi: ApiInterfaces.SellerProfileInterface by lazy { RetrofitClient.getSellerProfile() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +79,8 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         toggle.syncState()
 
         binding.navView.setNavigationItemSelectedListener(this)
+        navHeader = binding.navView.getHeaderView(0)
+
         menuHome()
 
         binding.titleBar.btnNewOrder.setOnClickListener {
@@ -92,7 +102,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             }
         }
 
-        binding.navView.getHeaderView(0).tvCloseNav.setOnClickListener {
+        navHeader.tvCloseNav.setOnClickListener {
             if (binding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
@@ -180,6 +190,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
             "OrderDetails" -> orderDetails()
             "ProductPage" -> productPage()
             "NoticeList" -> noticeListPage()
+            "loadProfile" -> loadUserData()
             else -> {
                 menuHome()
             }
@@ -401,6 +412,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         fragmentTransaction.commit()
     }
 
+    // API calling for Order Confirmations
     private fun orderApi(body: JsonObject){
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -410,6 +422,8 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                         //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
                             Log.d("Order Confirmed: ",  it.toString())
+                            OrderListData.flag = false // this is for call order list api again
+                            SellerProfile.flag = false
                             orderConfirmationPage()
                         }
                     }else{
@@ -425,6 +439,16 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 }
             }
         }
+    }
+
+    // Seller Profile and dashboard data and data load from the object
+    private fun loadUserData(){
+        navHeader.tvUserName.text = SellerProfile.data.name
+        navHeader.tvUserPhone.text = SellerProfile.data.phone
+        val url = Utils.baseUrl() +  SellerProfile.data.avatar
+
+        // load image into view
+        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(navHeader.ivUserAvatar)
     }
 
 }

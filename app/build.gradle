@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
 }
@@ -52,13 +53,17 @@ dependencies {
     // For control over item selection of both touch and mouse driven selection
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
 
+    //Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
+
     //Google Gson and swiper refresh layout
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // Retrofit for api calling
-    implementation 'com.squareup.retrofit2:retrofit:2.8.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // For Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -76,11 +81,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
 
     // Glide
-    implementation "com.github.bumptech.glide:glide:4.11.0"
+    implementation "com.github.bumptech.glide:glide:4.12.0"
 
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
 
     //Navigation for fragment
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'

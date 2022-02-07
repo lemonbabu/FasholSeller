@@ -11,6 +11,7 @@ import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.model.orderdata.OrderDataModel
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
+import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.databinding.FragmentOrderListBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
@@ -31,12 +32,17 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
         binding = FragmentOrderListBinding.bind(view)
         fc = activity as MainFragmentCommunicator
 
-        binding.pbLoading.visibility = View.GONE
         binding.rvOrderList.layoutManager = GridLayoutManager(context,1)
         orderListAdapter = OrderListAdapter(this)
 
 
-        loadOrderList()
+        if(!OrderListData.flag){
+            binding.pbLoading.visibility = View.VISIBLE
+            loadOrderList()
+        }else{
+            orderListAdapter.submitList(OrderListData.data)
+            binding.rvOrderList.adapter = orderListAdapter
+        }
 
     }
 
@@ -51,6 +57,8 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
                         response.body()?.result?.let {
                             orderListAdapter.submitList(it)
                             binding.rvOrderList.adapter = orderListAdapter
+                            OrderListData.flag = true
+                            OrderListData.data = it
                         }
                     }else{
                         Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
