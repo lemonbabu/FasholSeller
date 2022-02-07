@@ -76,6 +76,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         binding.tvPhone.text = SellerProfile.data.phone
         binding.tvEmail.text = SellerProfile.data.email
 
+        binding.tvAddress.text = SellerProfile.data.status
+
         val url = Utils.baseUrl() +  SellerProfile.data.avatar
         // load image into view
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(binding.ivUserAvatar)
