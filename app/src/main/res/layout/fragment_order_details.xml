@@ -19,10 +19,12 @@
 
     <TextView
         android:id="@+id/tvCustomerName"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="@string/customer_name"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/ivCustomerAvatar"
@@ -41,10 +43,11 @@
 
     <TextView
         android:id="@+id/tvOrderDate"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="60dp"
+        android:maxLines="1"
         android:text="@string/date_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvCustomerName"
@@ -52,16 +55,16 @@
 
     <TextView
         android:id="@+id/tvCustomerAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/sample_address"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCustomerName"
+        app:layout_constraintStart_toStartOf="@+id/tvOrderDate"
         app:layout_constraintTop_toBottomOf="@+id/tvOrderDate" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvOrderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -81,7 +84,7 @@
         android:text="@string/order_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/tvOrderId" />
 
 
     <TextView
@@ -125,6 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvItemList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
@@ -135,6 +139,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView23"
         tools:itemCount="5"
         tools:listitem="@layout/layout_single_order_product_item" />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

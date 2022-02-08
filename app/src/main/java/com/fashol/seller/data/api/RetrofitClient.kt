@@ -95,6 +95,15 @@ object RetrofitClient {
         return retrofit.create(ApiInterfaces.SellerProfileInterface::class.java)
     }
 
+    //retrofit builder for Order Details
+    fun getOrderDetails(): ApiInterfaces.OrderDetailsInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.OrderDetailsInterface::class.java)
+    }
+
 }
 
 

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.orderdata.OrderDataModel
-import com.fashol.seller.data.model.orderdata.OrderListDataModel
+import com.fashol.seller.data.repository.local.OrderDetailsData
 import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.databinding.FragmentOrderListBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
@@ -32,7 +31,7 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
         binding = FragmentOrderListBinding.bind(view)
         fc = activity as MainFragmentCommunicator
 
-        binding.rvOrderList.layoutManager = GridLayoutManager(context,1)
+        //binding.rvOrderList.layoutManager = GridLayoutManager(context,1)
         orderListAdapter = OrderListAdapter(this)
 
 
@@ -53,7 +52,7 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
                 withContext(Dispatchers.Main){
                     Log.d("Order List: ",  response.toString())
                     if (response.body()?.success == true){
-                        Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
                             orderListAdapter.submitList(it)
                             binding.rvOrderList.adapter = orderListAdapter
@@ -75,7 +74,8 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
         }
     }
 
-    override fun onOrderClickListener() {
+    override fun onOrderClickListener(id: Int) {
+        OrderDetailsData.id = id
         fc.passData("OrderDetails")
     }
 

@@ -3,6 +3,7 @@ package com.fashol.seller.data.api
 import com.fashol.seller.data.model.customerdata.CreateCustomerResponse
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
 import com.fashol.seller.data.model.orderdata.OrderConfirmationResponse
+import com.fashol.seller.data.model.orderdata.OrderDetailsResponseDataModel
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.data.model.productdata.CategoryDataModel
 import com.fashol.seller.data.model.productdata.ProductDataModel
@@ -47,13 +48,22 @@ interface ApiInterfaces{
         ): Call<ProductDataModel>
     }
 
-    // Product List bu category interface
+    // Product List by category interface
     interface ProductListByCategoryInterface{
         @GET("common-api/category/{id}")
         fun getProductListByCategory(
             @Path("id") id : Int,
             @Header("Authorization") auth: String,
         ): Call<ProductDataModel>
+    }
+
+    // Order Details interface
+    interface OrderDetailsInterface{
+        @GET("v1/sales-executive/orders/{id}/show")
+        fun getOrderDetails(
+            @Path("id") id : Int,
+            @Header("Authorization") auth: String,
+        ): Call<OrderDetailsResponseDataModel>
     }
 
 

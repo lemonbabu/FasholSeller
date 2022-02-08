@@ -10,6 +10,7 @@ import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.repository.local.CustomerListData
+import com.fashol.seller.data.repository.local.OrderDetailsData
 import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.data.repository.local.SellerProfile
 import com.fashol.seller.databinding.FragmentDashboardBinding
@@ -153,7 +154,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
                             CustomerListData.flag = true
                         }
                     }else{
-                        Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, response.body()?.message.toString()  , Toast.LENGTH_SHORT).show()
                     }
                     binding.pbLoading.visibility = View.GONE
                 }
@@ -168,7 +169,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
     }
 
     //Item click listener
-    override fun onOrderClickListener() {
+    override fun onOrderClickListener(id: Int) {
+        OrderDetailsData.id = id
         fc.passData("OrderDetails")
     }
 

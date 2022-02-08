@@ -29,7 +29,7 @@ class OrderListAdapter(private var onItemClickListener: OnOrderClickListener) : 
         holder.tPrice.text = order.status
 
         holder.btnDetails.setOnClickListener {
-            onItemClickListener.onOrderClickListener()
+            onItemClickListener.onOrderClickListener(order.order_list[0].order_id)
         }
 
         holder.itemView.setOnClickListener {
@@ -49,7 +49,7 @@ class OrderListAdapter(private var onItemClickListener: OnOrderClickListener) : 
     }
 
     interface OnOrderClickListener{
-        fun onOrderClickListener()
+        fun onOrderClickListener(id: Int)
     }
 
 }
