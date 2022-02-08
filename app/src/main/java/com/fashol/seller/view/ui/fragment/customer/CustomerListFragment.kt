@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
+import com.fashol.seller.data.repository.local.CustomerListData
 import com.fashol.seller.databinding.FragmentCustomerListBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
-import com.fashol.seller.view.adapter.CustomerAdapter
 import com.fashol.seller.view.adapter.CustomerListAdapter
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
@@ -30,11 +30,16 @@ class CustomerListFragment : Fragment(R.layout.fragment_customer_list), Customer
         binding = FragmentCustomerListBinding.bind(view)
         fc = activity as MainFragmentCommunicator
 
-        binding.pbLoading.visibility = View.VISIBLE
         binding.rvCustomerList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         customerAdapter = CustomerListAdapter(this)
 
-        getAllCustomerList()
+        if(!CustomerListData.flag){
+            binding.pbLoading.visibility = View.VISIBLE
+            getAllCustomerList()
+        } else{
+            customerAdapter.submitList(CustomerListData.data)
+            binding.rvCustomerList.adapter= customerAdapter
+        }
 
     }
 

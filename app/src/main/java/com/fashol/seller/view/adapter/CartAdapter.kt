@@ -12,7 +12,7 @@ import com.fashol.seller.data.model.orderdata.CartItemDataModel
 import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
 
-class CartAdapter : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
+class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickListener) : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
     private var itemList: ArrayList<CartItemDataModel> = ArrayList()
 
     fun submitList(list: List<CartItemDataModel>){
@@ -33,9 +33,12 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
         holder.pVariant.text = "(" + item.variant + ")"
         holder.priceQuantity.text = "দাম: " + item.quantity + " * " + item.unitPrice + " = " + (item.quantity * item.unitPrice)  + " টাকা"
         val url = Utils.baseUrl() +  item.avatar
-
         // load image into view
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener.onCartItemClickListener(position, (item.unitPrice * item.quantity))
+        }
     }
 
     override fun getItemCount(): Int {
@@ -47,7 +50,12 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
         var pName: TextView = view.findViewById(R.id.tvCartProductName)
         var pVariant: TextView = view.findViewById(R.id.tvItemVariant)
         var priceQuantity: TextView = view.findViewById(R.id.tv_cart_item_Price)
+        var remove: TextView = view.findViewById(R.id.tv_cart_item_remove)
         //var quantity: TextView = view.findViewById(R.id.tvQuantity)
+    }
+
+    interface OnCartItemClickListener{
+        fun onCartItemClickListener(id: Int, price: Double)
     }
 
 }

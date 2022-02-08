@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
+import com.fashol.seller.data.repository.local.CategoryProductListData
 import com.fashol.seller.databinding.FragmentAddProductBinding
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
 import com.fashol.seller.utilits.Utils
@@ -35,15 +36,29 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         binding = FragmentAddProductBinding.bind(view)
         fcPopUp = activity as PopUpFragmentCommunicator
 
-        binding.pbLoading.visibility = View.VISIBLE
         binding.rvProducts.layoutManager = GridLayoutManager(context, 3)
         productAdapter = ProductAdapter(this)
 
         binding.rvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         categoryAdapter = CategoryAdapter(this)
 
-        loadCategory()
-        loadProduct()
+        if(CategoryProductListData.flagCat){
+            categoryAdapter.submitList(CategoryProductListData.dataCat)
+            binding.rvCategory.adapter = categoryAdapter
+        }else{
+            binding.pbLoading.visibility = View.VISIBLE
+            loadCategory()
+        }
+
+        if(CategoryProductListData.flagPro){
+            productAdapter.submitList(CategoryProductListData.dataPro)
+            binding.rvProducts.adapter = productAdapter
+        } else{
+            binding.pbLoading.visibility = View.VISIBLE
+            loadProduct()
+        }
+
+
 
     }
 
@@ -79,6 +94,8 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                         response.body()?.result?.let {
                             categoryAdapter.submitList(it)
                             binding.rvCategory.adapter = categoryAdapter
+                            CategoryProductListData.flagCat = true
+                            CategoryProductListData.dataCat = it
                         }
                     }else{
                         Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
@@ -95,6 +112,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         }
     }
 
+    // load all product form this api
     private fun loadProduct(){
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -106,6 +124,8 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                         response.body()?.result?.let {
                             productAdapter.submitList(it)
                             binding.rvProducts.adapter = productAdapter
+                            CategoryProductListData.flagPro = true
+                            CategoryProductListData.dataPro = it
                         }
                     }else{
                         Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()

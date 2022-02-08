@@ -7,24 +7,34 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.fashol.seller.data.api.ApiInterfaces
+import com.fashol.seller.data.api.RetrofitClient
+import com.fashol.seller.data.repository.local.CategoryProductListData
 import com.fashol.seller.databinding.ActivitySplashScreenBinding
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.utilits.Utils.fullScreen
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_splash_screen.*
+import kotlinx.coroutines.*
+import retrofit2.awaitResponse
 
+@DelicateCoroutinesApi
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private var mHandler: Handler? = null
+    private val categoryApi: ApiInterfaces.CategoryListInterface by lazy { RetrofitClient.getCategoryList() }
+    private val productApi: ApiInterfaces.ProductListInterface by lazy { RetrofitClient.getProductList() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fullScreen(this)
+
+        loadCategory()
+        loadProduct()
 
         mHandler = Handler(mainLooper)
         doWork()
@@ -62,6 +72,58 @@ class SplashScreen : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    // load category data from api using coroutine
+    private fun loadCategory(){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = categoryApi.getCategoryList("Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    Log.d("Category List: ",  response.toString())
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            CategoryProductListData.flagCat = true
+                            CategoryProductListData.dataCat = it
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }catch (e: Exception) {
+                Log.d(" Error Category ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    // load all product form this api
+    private fun loadProduct(){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = productApi.getProductList("Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    Log.d("Product List: ",  response.toString())
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            CategoryProductListData.flagPro = true
+                            CategoryProductListData.dataPro = it
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }catch (e: Exception) {
+                Log.d(" Error Product ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 }

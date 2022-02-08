@@ -3,15 +3,15 @@ package com.fashol.seller.view.ui.fragment.customer
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.repository.local.CustomerListData
 import com.fashol.seller.databinding.FragmentSelectCustomerBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
@@ -32,12 +32,18 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
       binding = FragmentSelectCustomerBinding.bind(view)
       fc = activity as MainFragmentCommunicator
 
-      binding.pbLoading.visibility = View.VISIBLE
       binding.rvTopCustomer.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
       customerAdapter = CustomerAdapter(this)
 
 
-      getAllCustomerList()
+      if(!CustomerListData.flag){
+         binding.pbLoading.visibility = View.VISIBLE
+         getAllCustomerList()
+      } else{
+         customerAdapter.submitList(CustomerListData.data)
+         binding.rvTopCustomer.adapter= customerAdapter
+         binding.rvCustomers.adapter = customerAdapter
+      }
 
    }
 
@@ -70,6 +76,8 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
                      customerAdapter.submitList(it)
                      binding.rvTopCustomer.adapter= customerAdapter
                      binding.rvCustomers.adapter = customerAdapter
+                     CustomerListData.flag = true
+                     CustomerListData.data = it
                   }
                }else{
                   Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()

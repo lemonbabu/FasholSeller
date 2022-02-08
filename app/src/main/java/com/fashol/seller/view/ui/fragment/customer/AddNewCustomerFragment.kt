@@ -3,18 +3,15 @@ package com.fashol.seller.view.ui.fragment.customer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
+import com.fashol.seller.data.repository.local.CustomerListData
 import com.fashol.seller.databinding.FragmentAddNewCustomerBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
-import kotlinx.android.synthetic.main.fragment_product_details.*
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
@@ -102,6 +99,7 @@ class AddNewCustomerFragment : Fragment(R.layout.fragment_add_new_customer) {
                                 Log.d("Crate new customer ",  it.toString())
                                 Toast.makeText(context, "$cName create successfully", Toast.LENGTH_SHORT).show()
                                 fc.passData("CustomerList")
+                                CustomerListData.flag = false // This is for loading customer API
                             }
                         }else{
                             Toast.makeText(context, response.body()?.message.toString() + " " + response.body().toString() , Toast.LENGTH_SHORT).show()

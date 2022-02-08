@@ -2,16 +2,14 @@ package com.fashol.seller.view.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.model.orderdata.OrderDataModel
+import com.fashol.seller.data.repository.local.CustomerListData
 import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.data.repository.local.SellerProfile
 import com.fashol.seller.databinding.FragmentDashboardBinding
@@ -29,6 +27,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
     private lateinit var orderListAdapter: OrderListAdapter
     private val orderListApi: ApiInterfaces.OrderListInterface by lazy { RetrofitClient.getOrderList() }
     private val sellerProfileApi: ApiInterfaces.SellerProfileInterface by lazy { RetrofitClient.getSellerProfile() }
+    private val customerApi: ApiInterfaces.CustomerListInterface by lazy { RetrofitClient.getCustomerList() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +59,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
             sellerProfile()
         } else{
             loadDashboardData()
+        }
+
+        if(!CustomerListData.flag){
+            getAllCustomerList()
         }
 
     }
@@ -135,6 +138,33 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
         binding.tv3Number.text = SellerProfile.data.dashboard[2].value.toString()
         binding.tv4.text = SellerProfile.data.dashboard[3].name
         binding.tv4Number.text = SellerProfile.data.dashboard[3].value.toString()
+    }
+
+    private fun getAllCustomerList(){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = customerApi.getCustomerList("Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    Log.d("Customer List Updated",  response.toString())
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            CustomerListData.data = it
+                            CustomerListData.flag = true
+                        }
+                    }else{
+                        Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }catch (e: Exception) {
+                Log.d(" Error Customer ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }
+        }
     }
 
     //Item click listener

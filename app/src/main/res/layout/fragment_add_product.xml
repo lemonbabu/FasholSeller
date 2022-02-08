@@ -104,6 +104,7 @@
         tools:listitem="@layout/layout_product_item" />
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/pbLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

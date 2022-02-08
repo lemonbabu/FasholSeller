@@ -337,10 +337,9 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 binding.cartFooter.layoutCartFooter.visibility = View.VISIBLE
                 loadProductData()
             }
-            "CartShow" ->{
-                cartShow()
-            }
+            "CartShow" -> cartShow()
             "OrderList" -> orderList()
+            "reloadCart" -> reloadCart()
             else -> {
                 menuHome()
             }
@@ -396,6 +395,10 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         fragmentTransaction.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_pop_exit_anim)
         fragmentTransaction.replace(R.id.fcPopUp, CartFragment())
         fragmentTransaction.commit()
+    }
+
+    private fun reloadCart(){
+        loadProductData()
     }
 
     // API calling for Order Confirmations
