@@ -82,6 +82,10 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
 
         }
 
+        binding.titleBar.btnNotification.setOnClickListener {
+            noticeListPage()
+        }
+
         binding.titleBar.btnOpenMenu.setOnClickListener {
             if (binding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
