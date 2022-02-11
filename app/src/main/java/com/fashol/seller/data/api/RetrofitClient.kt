@@ -23,6 +23,15 @@ object RetrofitClient {
         return retrofit.create(ApiInterfaces.CustomerListInterface::class.java)
     }
 
+    //retrofit builder for Logout
+    fun logout(): ApiInterfaces.LogoutInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.LogoutInterface::class.java)
+    }
+
     //retrofit builder for get Category List
     fun getCategoryList(): ApiInterfaces.CategoryListInterface {
         val retrofit: Retrofit = Retrofit.Builder()
@@ -103,6 +112,16 @@ object RetrofitClient {
             .build()
         return retrofit.create(ApiInterfaces.OrderDetailsInterface::class.java)
     }
+
+    //retrofit builder for Notification
+    fun getNotification(): ApiInterfaces.NotificationInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.NotificationInterface::class.java)
+    }
+
 
 }
 

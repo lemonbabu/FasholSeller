@@ -94,7 +94,7 @@ class SplashScreen : AppCompatActivity() {
             }catch (e: Exception) {
                 Log.d(" Error Category ", e.toString())
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -120,7 +120,7 @@ class SplashScreen : AppCompatActivity() {
             }catch (e: Exception) {
                 Log.d(" Error Product ", e.toString())
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
                 }
             }
         }

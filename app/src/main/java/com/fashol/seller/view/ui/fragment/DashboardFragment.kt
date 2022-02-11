@@ -9,26 +9,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.repository.local.CustomerListData
-import com.fashol.seller.data.repository.local.OrderDetailsData
-import com.fashol.seller.data.repository.local.OrderListData
-import com.fashol.seller.data.repository.local.SellerProfile
+import com.fashol.seller.data.model.notification.NotificationDataModel
+import com.fashol.seller.data.repository.local.*
 import com.fashol.seller.databinding.FragmentDashboardBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
+import com.fashol.seller.view.adapter.NotificationAdapter
 import com.fashol.seller.view.adapter.OrderListAdapter
+import kotlinx.android.synthetic.main.layout_notification_details.view.*
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
 @DelicateCoroutinesApi
-class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapter.OnOrderClickListener {
+class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapter.OnOrderClickListener, NotificationAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var fc: MainFragmentCommunicator
     private lateinit var orderListAdapter: OrderListAdapter
+    private lateinit var notificationAdapter: NotificationAdapter
     private val orderListApi: ApiInterfaces.OrderListInterface by lazy { RetrofitClient.getOrderList() }
     private val sellerProfileApi: ApiInterfaces.SellerProfileInterface by lazy { RetrofitClient.getSellerProfile() }
     private val customerApi: ApiInterfaces.CustomerListInterface by lazy { RetrofitClient.getCustomerList() }
+    private val notApi: ApiInterfaces.NotificationInterface by lazy { RetrofitClient.getNotification() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,6 +41,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
         binding.rvOrderList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         orderListAdapter = OrderListAdapter(this)
 
+        binding.rvtNotice.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        notificationAdapter = NotificationAdapter(this)
+
         binding.tvAllOrder.setOnClickListener {
            fc.passData("OrderList")
         }
@@ -46,6 +51,19 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
 
         binding.txtSeeMore.setOnClickListener {
             fc.passData("NoticeList")
+        }
+
+        binding.notification.layoutNoticeDetails.btnClose.setOnClickListener {
+            binding.notification.layoutNoticeDetails.visibility = View.GONE
+        }
+
+
+        if(!NotificationData.flag){
+            binding.pbLoading.visibility = View.VISIBLE
+            getAllNotification()
+        }else{
+            notificationAdapter.submitList(NotificationData.data)
+            binding.rvtNotice.adapter = notificationAdapter
         }
 
         if(!OrderListData.flag){
@@ -168,10 +186,49 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OrderListAdapte
         }
     }
 
+    private fun getAllNotification(){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = notApi.getNot("Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    Log.d("Notification Updated",  response.toString())
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            NotificationData.data = it
+                            NotificationData.flag = true
+                            notificationAdapter.submitList(NotificationData.data)
+                            binding.rvtNotice.adapter = notificationAdapter
+                        }
+                    }else{
+                        Toast.makeText(context, response.body()?.message.toString()  , Toast.LENGTH_SHORT).show()
+                    }
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }catch (e: Exception) {
+                Log.d(" Error Notification ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
+                    binding.pbLoading.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     //Item click listener
     override fun onOrderClickListener(id: Int) {
         OrderDetailsData.id = id
         fc.passData("OrderDetails")
+    }
+
+    override fun onNotClickListener(data: NotificationDataModel.Result) {
+
+        binding.notification.layoutNoticeDetails.visibility = View.VISIBLE
+        binding.notification.layoutNoticeDetails.tvNoticeTitle.text = data.title
+        binding.notification.layoutNoticeDetails.tvNoticeDetails.text = data.description
+        binding.notification.layoutNoticeDetails.tvNoticeDate.text = data.date
+
+
     }
 
 }

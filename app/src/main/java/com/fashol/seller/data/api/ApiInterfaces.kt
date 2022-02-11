@@ -2,12 +2,14 @@ package com.fashol.seller.data.api
 
 import com.fashol.seller.data.model.customerdata.CreateCustomerResponse
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.model.notification.NotificationDataModel
 import com.fashol.seller.data.model.orderdata.OrderConfirmationResponse
 import com.fashol.seller.data.model.orderdata.OrderDetailsResponseDataModel
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.data.model.productdata.CategoryDataModel
 import com.fashol.seller.data.model.productdata.ProductDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
+import com.fashol.seller.data.model.profile.LogoutResponseDataModel
 import com.fashol.seller.data.model.profile.SellerProfileDataModel
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -22,6 +24,14 @@ interface ApiInterfaces{
         fun getCustomerList(
             @Header("Authorization") auth: String,
         ): Call<CustomerDataModel>
+    }
+
+    // Logout interface
+    interface LogoutInterface{
+        @GET("v1/sales-executive/logout")
+        fun logout(
+            @Header("Authorization") auth: String,
+        ): Call<LogoutResponseDataModel>
     }
 
     // Customer List interface
@@ -64,6 +74,14 @@ interface ApiInterfaces{
             @Path("id") id : Int,
             @Header("Authorization") auth: String,
         ): Call<OrderDetailsResponseDataModel>
+    }
+
+    // Order List interface
+    interface NotificationInterface{
+        @GET("common-api/notices/auth-role")
+        fun getNot(
+            @Header("Authorization") auth: String,
+        ): Call<NotificationDataModel>
     }
 
 

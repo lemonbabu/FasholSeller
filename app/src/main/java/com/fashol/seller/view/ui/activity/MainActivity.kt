@@ -1,6 +1,7 @@
 package com.fashol.seller.view.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
     private var pressBack = false
     private var customerFlag = true
     private val orderApi: ApiInterfaces.CreateOrderInterface by lazy { RetrofitClient.newOrder() }
+    private val logoutApi: ApiInterfaces.LogoutInterface by lazy { RetrofitClient.logout() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -260,7 +262,35 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
     }
 
     private fun logout() {
-
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = logoutApi.logout("Bearer ${Utils.token()}").awaitResponse()
+                withContext(Dispatchers.Main){
+                    if (response.body()?.success == true){
+                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
+                        response.body()?.result?.let {
+                            Log.d("Logout.... ",  it.toString())
+                            Toast.makeText(applicationContext,"Logout Confirm!!", Toast.LENGTH_SHORT).show()
+                            val sharedPreferences = getSharedPreferences("Session", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.apply{
+                                putBoolean("session", false)
+                                putString("token", "")
+                            }.apply()
+                            startActivity(Intent(applicationContext, Login::class.java))
+                            finish()
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }catch (e: Exception) {
+                Log.d(" Error to Order ", e.toString())
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(applicationContext,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun selectCustomer(){

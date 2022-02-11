@@ -4,18 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.JsonReader
-import android.util.JsonToken
 import android.util.Log
 import android.view.View
-import android.webkit.*
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.fashol.seller.databinding.ActivityLoginBinding
 import com.fashol.seller.utilits.Utils
-import java.io.IOException
-import java.io.StringReader
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 
+@DelicateCoroutinesApi
 class Login : AppCompatActivity(){
 
     var Tag = "Login Url"
