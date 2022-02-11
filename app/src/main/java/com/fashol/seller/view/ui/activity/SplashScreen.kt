@@ -4,14 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.fashol.seller.BuildConfig
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
-import com.fashol.seller.data.repository.local.CategoryProductListData
 import com.fashol.seller.databinding.ActivitySplashScreenBinding
 import com.fashol.seller.utilits.Utils
 import com.fashol.seller.utilits.Utils.fullScreen
@@ -24,8 +25,8 @@ import retrofit2.awaitResponse
 class SplashScreen : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private var mHandler: Handler? = null
-    private val categoryApi: ApiInterfaces.CategoryListInterface by lazy { RetrofitClient.getCategoryList() }
-    private val productApi: ApiInterfaces.ProductListInterface by lazy { RetrofitClient.getProductList() }
+    private var versionName: String = BuildConfig.VERSION_NAME
+    private val versionApi: ApiInterfaces.VersionCheckingInterface by lazy { RetrofitClient.getVersion() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +34,11 @@ class SplashScreen : AppCompatActivity() {
         setContentView(binding.root)
         fullScreen(this)
 
-        loadCategory()
-        loadProduct()
+        loadVersion()
 
         mHandler = Handler(mainLooper)
         doWork()
+
 
     }
 
@@ -50,17 +51,6 @@ class SplashScreen : AppCompatActivity() {
                 mHandler!!.post { progressBar.progress = i }
             }
         }.start()
-
-        mHandler!!.postDelayed({
-            if(session()){
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }else{
-                startActivity(Intent(this, Login::class.java))
-                finish()
-            }
-
-        }, prg.toLong())
     }
 
     private fun session(): Boolean{
@@ -75,20 +65,34 @@ class SplashScreen : AppCompatActivity() {
     }
 
     // load category data from api using coroutine
-    private fun loadCategory(){
+    private fun loadVersion(){
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = categoryApi.getCategoryList("Bearer ${Utils.token()}").awaitResponse()
+                val response = versionApi.getVersion().awaitResponse()
                 withContext(Dispatchers.Main){
                     Log.d("Category List: ",  response.toString())
-                    if (response.body()?.success == true){
-                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
-                        response.body()?.result?.let {
-                            CategoryProductListData.flagCat = true
-                            CategoryProductListData.dataCat = it
-                        }
+                    if (response.body()?.result?.version != versionName) {
+                        AlertDialog.Builder(this@SplashScreen)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Update Required")
+                            .setMessage("Update your apps form play store")
+                            .setPositiveButton("Update") { _, _ ->
+                                val uri = Uri.parse("https://play.google.com/store/apps/details?id=com.fashol.seller")
+                                //val uri = Uri.parse("https://play.google.com/store/apps/details?id=null")
+                                startActivity(Intent(Intent.ACTION_VIEW, uri))
+                                finish()
+                            }
+                            .setNegativeButton("Close", null)
+                            .show()
                     }else{
-                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
+                        delay(2000L)
+                        if(session()){
+                            startActivity(Intent(applicationContext, MainActivity::class.java))
+                            finish()
+                        }else{
+                            startActivity(Intent(applicationContext, Login::class.java))
+                            finish()
+                        }
                     }
                 }
             }catch (e: Exception) {
@@ -100,30 +104,5 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
-    // load all product form this api
-    private fun loadProduct(){
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response = productApi.getProductList("Bearer ${Utils.token()}").awaitResponse()
-                withContext(Dispatchers.Main){
-                    Log.d("Product List: ",  response.toString())
-                    if (response.body()?.success == true){
-                        //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
-                        response.body()?.result?.let {
-                            CategoryProductListData.flagPro = true
-                            CategoryProductListData.dataPro = it
-                        }
-                    }else{
-                        Toast.makeText(applicationContext, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }catch (e: Exception) {
-                Log.d(" Error Product ", e.toString())
-                withContext(Dispatchers.Main) {
-                    //Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
 }

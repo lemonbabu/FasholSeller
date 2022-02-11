@@ -14,6 +14,15 @@ object RetrofitClient {
         .setLenient()
         .create()
 
+    //retrofit builder for get Version
+    fun getVersion(): ApiInterfaces.VersionCheckingInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.VersionCheckingInterface::class.java)
+    }
+
     //retrofit builder for get Customer List
     fun getCustomerList(): ApiInterfaces.CustomerListInterface {
         val retrofit: Retrofit = Retrofit.Builder()

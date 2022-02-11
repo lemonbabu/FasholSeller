@@ -1,5 +1,6 @@
 package com.fashol.seller.data.api
 
+import com.fashol.seller.data.model.VersionCheckingDataModel
 import com.fashol.seller.data.model.customerdata.CreateCustomerResponse
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
 import com.fashol.seller.data.model.notification.NotificationDataModel
@@ -17,6 +18,13 @@ import retrofit2.http.*
 
 
 interface ApiInterfaces{
+
+    // Category List interface
+    interface VersionCheckingInterface{
+        @GET("v1/sales-executive/version")
+        fun getVersion(
+        ): Call<VersionCheckingDataModel>
+    }
 
     // Customer List interface
     interface CustomerListInterface{
