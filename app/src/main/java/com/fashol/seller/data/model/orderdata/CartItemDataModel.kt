@@ -5,7 +5,7 @@ class CartItemDataModel(
     var name: String,
     var avatar: String,
     var unitPrice: Double,
-    var quantity: Int,
+    var quantity: Double,
     var variant: String,
     var variantId: Int
 ) {

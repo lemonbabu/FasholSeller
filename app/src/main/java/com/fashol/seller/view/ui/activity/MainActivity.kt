@@ -30,6 +30,7 @@ import com.fashol.seller.view.ui.fragment.cart.CartFragment
 import com.fashol.seller.view.ui.fragment.cart.ProductDetailsFragment
 import com.fashol.seller.view.ui.fragment.customer.AddNewCustomerFragment
 import com.fashol.seller.view.ui.fragment.customer.CustomerListFragment
+import com.fashol.seller.view.ui.fragment.customer.CustomerProfileFragment
 import com.fashol.seller.view.ui.fragment.customer.SelectCustomerFragment
 import com.fashol.seller.view.ui.fragment.notice.NoticeListFragment
 import com.fashol.seller.view.ui.fragment.order.OrderConfirmationFragment
@@ -175,7 +176,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         when (txt) {
             "deliveryList" -> {
             }
-            "CustomerProfile" -> userProfile()
+            "CustomerProfile" -> customerProfile()
             "CustomerList" -> customerList()
             "Dashboard" -> menuHome()
             "OrderList" -> orderList()
@@ -220,6 +221,13 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding.titleBar.btnBack.visibility = View.VISIBLE
         binding.titleBar.txtTitle.visibility = View.VISIBLE
         binding.titleBar.txtTitle.text = resources.getString(R.string.user_profile)
+    }
+
+    private fun customerProfile() {
+        replaceFragment(CustomerProfileFragment())
+        binding.titleBar.btnBack.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.visibility = View.VISIBLE
+        binding.titleBar.txtTitle.text = resources.getString(R.string.customer_profile)
     }
 
     private fun addNewCustomer(){

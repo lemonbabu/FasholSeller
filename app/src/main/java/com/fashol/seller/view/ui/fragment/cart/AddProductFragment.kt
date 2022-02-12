@@ -2,6 +2,8 @@ package com.fashol.seller.view.ui.fragment.cart
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
+import com.fashol.seller.data.model.productdata.ProductDataModel
 import com.fashol.seller.data.repository.local.CategoryProductListData
 import com.fashol.seller.databinding.FragmentAddProductBinding
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
@@ -31,6 +34,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
     private val productApi: ApiInterfaces.ProductListInterface by lazy { RetrofitClient.getProductList() }
     private val productByCategoryApi: ApiInterfaces.ProductListByCategoryInterface by lazy { RetrofitClient.getProductListByCategory() }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAddProductBinding.bind(view)
@@ -42,9 +46,11 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         binding.rvCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         categoryAdapter = CategoryAdapter(this)
 
+
         if(CategoryProductListData.flagCat){
             categoryAdapter.submitList(CategoryProductListData.dataCat)
             binding.rvCategory.adapter = categoryAdapter
+
         }else{
             binding.pbLoading.visibility = View.VISIBLE
             loadCategory()
@@ -53,12 +59,19 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
         if(CategoryProductListData.flagPro){
             productAdapter.submitList(CategoryProductListData.dataPro)
             binding.rvProducts.adapter = productAdapter
+            emptyChecking(CategoryProductListData.dataPro.size)
         } else{
             binding.pbLoading.visibility = View.VISIBLE
             loadProduct()
         }
 
-
+        binding.etSearchProduct.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                filter(s.toString())
+            }
+        })
 
     }
 
@@ -126,6 +139,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                             binding.rvProducts.adapter = productAdapter
                             CategoryProductListData.flagPro = true
                             CategoryProductListData.dataPro = it
+                            emptyChecking(it.size)
                         }
                     }else{
                         Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
@@ -167,6 +181,28 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
                     binding.pbLoading.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<ProductDataModel.Result> = ArrayList()
+        for (item in CategoryProductListData.dataPro) {
+            for(i in item.tags){
+                if (i.lowercase().contains(text.lowercase()) ) {
+                    filteredList.add(item)
+                }
+            }
+        }
+        emptyChecking(filteredList.size)
+        productAdapter.filterList(filteredList)
+
+    }
+
+    private fun emptyChecking(size: Int){
+        if(size == 0){
+            binding.tvEmptyProduct.visibility = View.VISIBLE
+        } else {
+            binding.tvEmptyProduct.visibility = View.GONE
         }
     }
 

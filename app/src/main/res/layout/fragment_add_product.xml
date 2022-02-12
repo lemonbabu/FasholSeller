@@ -8,7 +8,7 @@
     tools:context=".view.ui.fragment.cart.AddProductFragment">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etSearchProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -29,9 +29,9 @@
         android:layout_height="0dp"
         android:layout_marginEnd="60dp"
         android:background="@color/primary"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintEnd_toEndOf="@+id/editText"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintBottom_toBottomOf="@+id/etSearchProduct"
+        app:layout_constraintEnd_toEndOf="@+id/etSearchProduct"
+        app:layout_constraintTop_toTopOf="@+id/etSearchProduct" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -41,10 +41,10 @@
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/ic_ionic_ios_search"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintEnd_toEndOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/etSearchProduct"
+        app:layout_constraintEnd_toEndOf="@+id/etSearchProduct"
         app:layout_constraintStart_toEndOf="@+id/view5"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/etSearchProduct" />
 
     <TextView
         android:id="@+id/textView17"
@@ -57,7 +57,7 @@
         android:text="@string/category_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearchProduct" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategory"
@@ -100,7 +100,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18"
         app:layout_constraintVertical_bias="0.0"
-        tools:itemCount="3"
+        tools:itemCount="5"
+        app:spanCount="3"
         tools:listitem="@layout/layout_product_item" />
 
     <ProgressBar
@@ -112,5 +113,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvEmptyProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_product_available"
+        app:layout_constraintBottom_toBottomOf="@+id/rvProducts"
+        app:layout_constraintEnd_toEndOf="@+id/rvProducts"
+        app:layout_constraintStart_toStartOf="@+id/rvProducts"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

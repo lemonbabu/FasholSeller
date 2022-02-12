@@ -43,7 +43,8 @@ class CustomerListFragment : Fragment(R.layout.fragment_customer_list), Customer
 
     }
 
-    override fun onCustomerClickListener(id: Int, name: String, avatar: String) {
+    override fun onCustomerClickListener(id: Int, ) {
+        CustomerListData.index = id
         fc.passData("CustomerProfile")
     }
 

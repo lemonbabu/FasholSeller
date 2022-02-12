@@ -5,4 +5,5 @@ import com.fashol.seller.data.model.customerdata.CustomerDataModel
 object CustomerListData {
     var flag = false
     lateinit var data : List<CustomerDataModel.Result>
+    var index = -1
 }

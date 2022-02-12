@@ -1,5 +1,6 @@
 package com.fashol.seller.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.fashol.seller.data.model.customerdata.CustomerDataModel
 import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.utilits.Utils
 import com.squareup.picasso.Picasso
+
 
 class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener): RecyclerView.Adapter<CustomerAdapter.MyViewHolder>(){
     private var customerList: ArrayList<CustomerDataModel.Result> = ArrayList()
@@ -84,5 +86,11 @@ class CustomerAdapter(private var onItemClickListener: OnCustomerClickListener):
 
     interface OnCustomerClickListener{
         fun onCustomerClickListener(id: Int, name: String, avatar: String)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filteredList: ArrayList<CustomerDataModel.Result>) {
+        customerList = filteredList
+        notifyDataSetChanged()
     }
 }

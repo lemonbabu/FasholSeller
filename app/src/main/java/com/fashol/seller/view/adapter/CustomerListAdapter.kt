@@ -47,7 +47,7 @@ class CustomerListAdapter(private var onItemClickListener: OnCustomerClickListen
         holder.itemView.setOnClickListener {
             CartData.customerId = customer.id.toString()
             CartData.customerName = customer.name
-            onItemClickListener.onCustomerClickListener(customer.id, customer.name, customer.profile_pic)
+            onItemClickListener.onCustomerClickListener(position)
         }
     }
 
@@ -86,6 +86,6 @@ class CustomerListAdapter(private var onItemClickListener: OnCustomerClickListen
     }
 
     interface OnCustomerClickListener{
-        fun onCustomerClickListener(id: Int, name: String, avatar: String)
+        fun onCustomerClickListener(id: Int)
     }
 }

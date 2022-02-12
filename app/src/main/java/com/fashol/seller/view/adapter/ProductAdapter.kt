@@ -1,9 +1,9 @@
 package com.fashol.seller.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -81,6 +81,12 @@ class ProductAdapter(private var onItemClickListener: OnProductClickListener): R
 
     interface OnProductClickListener{
         fun onProductClickListener(id: Int, name: String, avatar: String)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filteredList: ArrayList<ProductDataModel.Result>) {
+        productList = filteredList
+        notifyDataSetChanged()
     }
 
 }

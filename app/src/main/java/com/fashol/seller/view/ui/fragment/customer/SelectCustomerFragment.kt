@@ -2,6 +2,8 @@ package com.fashol.seller.view.ui.fragment.customer
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,6 +20,7 @@ import com.fashol.seller.utilits.Utils
 import com.fashol.seller.view.adapter.CustomerAdapter
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
+
 
 @DelicateCoroutinesApi
 class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), CustomerAdapter.OnCustomerClickListener {
@@ -43,8 +46,16 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
          customerAdapter.submitList(CustomerListData.data)
          binding.rvTopCustomer.adapter= customerAdapter
          binding.rvCustomers.adapter = customerAdapter
+         emptyChecking(CustomerListData.data.size)
       }
 
+      binding.etSearchCustomer.addTextChangedListener(object : TextWatcher {
+         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+         override fun afterTextChanged(s: Editable) {
+            filter(s.toString())
+         }
+      })
    }
 
    override fun onCustomerClickListener(id: Int, name: String, avatar: String) {
@@ -78,6 +89,7 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
                      binding.rvCustomers.adapter = customerAdapter
                      CustomerListData.flag = true
                      CustomerListData.data = it
+                     emptyChecking(it.size)
                   }
                }else{
                   Toast.makeText(context, response.body()?.message.toString() + response.errorBody() , Toast.LENGTH_SHORT).show()
@@ -91,6 +103,25 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
                binding.pbLoading.visibility = View.GONE
             }
          }
+      }
+   }
+
+   private fun filter(text: String) {
+      val filteredList: ArrayList<CustomerDataModel.Result> = ArrayList()
+      for (item in CustomerListData.data) {
+         if (item.name.lowercase().contains(text.lowercase()) || item.store_name.lowercase().contains(text.lowercase()) || item.phone.lowercase().contains(text.lowercase())) {
+            filteredList.add(item)
+         }
+      }
+      emptyChecking(filteredList.size)
+      customerAdapter.filterList(filteredList)
+   }
+
+   private fun emptyChecking(size: Int){
+      if(size == 0){
+         binding.tvEmptyProduct.visibility = View.VISIBLE
+      } else {
+         binding.tvEmptyProduct.visibility = View.GONE
       }
    }
 

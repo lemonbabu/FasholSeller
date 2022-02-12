@@ -2,14 +2,14 @@ package com.fashol.seller.view.ui.fragment.cart
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import androidx.core.view.isEmpty
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
@@ -66,22 +66,35 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
                 binding.tvProductPrice.text = variantAdapter[position].price.toString()
             }
 
-        binding.etProductQuantity.addTextChangedListener {
-            val qun = it.toString().trim()
-            val uPrice = binding.tvProductPrice.text.toString().trim()
+//        binding.etProductQuantity.addTextChangedListener {
+//            val qun = it.toString().trim()
+//            val uPrice = binding.tvProductPrice.text.toString().trim()
+//
+//            if(binding.etProductQuantity.text.isEmpty()){
+//                binding.etProductQuantity.error = "Quantity need to fill up!"
+//                binding.etProductQuantity.requestFocus()
+//                return@addTextChangedListener
+//            }
+//            if(binding.lstVariant.isEmpty()){
+//                Toast.makeText(context, "Select Variant required", Toast.LENGTH_SHORT).show()
+//            } else{
+//                binding.tvSubtotal.text = (qun.toFloat() * uPrice.toFloat()).toString()
+//            }
+//        }
 
-            if(binding.etProductQuantity.text.isEmpty()){
-                binding.etProductQuantity.error = "Quantity need to fill up!"
-                binding.etProductQuantity.requestFocus()
-                return@addTextChangedListener
-            }
+        binding.etProductQuantity.addTextChangedListener(object : TextWatcher {
 
-            if(binding.lstVariant.isEmpty()){
-                Toast.makeText(context, "Select Variant required", Toast.LENGTH_SHORT).show()
-            } else{
-                binding.tvSubtotal.text = (qun.toFloat() * uPrice.toFloat()).toString()
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                if((lstVariant.editText as AutoCompleteTextView).text.toString().trim().isEmpty()){
+                    Toast.makeText(context, "Select Variant required", Toast.LENGTH_SHORT).show()
+                    return
+                }
             }
-        }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                binding.tvSubtotal.text = (s.toString().toFloat() * binding.tvProductPrice.text.toString().trim().toFloat()).toString()
+            }
+        })
 
         binding.btnAddCart.setOnClickListener {
             val qun = binding.etProductQuantity.text.toString().trim()
@@ -91,7 +104,7 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
                 binding.etProductQuantity.requestFocus()
                 return@setOnClickListener
             }
-            if(binding.lstVariant.isEmpty()){
+            if((lstVariant.editText as AutoCompleteTextView).text.toString().trim().isEmpty()){
                 Toast.makeText(context, "Select Variant required", Toast.LENGTH_SHORT).show()
             }else{
                 addItemInCart()
@@ -165,11 +178,11 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
             binding.tvProductName.text.toString().trim(),
             avatarLink,
             binding.tvProductPrice.text.toString().trim().toDouble(),
-            binding.etProductQuantity.text.toString().trim().toInt(),
+            binding.etProductQuantity.text.toString().trim().toDouble(),
             (lstVariant.editText as AutoCompleteTextView).text.toString().trim(),
             variantId)
         )
-        CartData.totalAmount = CartData.totalAmount + (binding.tvProductPrice.text.toString().trim().toDouble() * binding.etProductQuantity.text.toString().trim().toInt())
+        CartData.totalAmount = CartData.totalAmount + (binding.tvProductPrice.text.toString().trim().toDouble() * binding.etProductQuantity.text.toString().trim().toDouble())
 
 
 //        var item = 0

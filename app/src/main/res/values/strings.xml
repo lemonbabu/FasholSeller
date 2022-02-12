@@ -43,6 +43,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="hello">Hello</string>
     <string name="user_profile">User Profile</string>
+    <string name="customer_profile">Customer Profile</string>
     <string name="add_new_customer">Add New Customer</string>
     <string name="select_customer">Select Customer</string>
     <string name="this_month">This Month</string>
@@ -105,6 +106,8 @@
     <string name="write_spacial_requirements">Write spacial requirements</string>
     <string name="full_name">Full Name:</string>
     <string name="email">Email:</string>
-    <string name="up_coming">up coming...</string>
+    <string name="up_coming">up coming…</string>
+    <string name="no_product_available">No Product Available</string>
+    <string name="no_customer_available">No Customer Available</string>
 
 </resources>
