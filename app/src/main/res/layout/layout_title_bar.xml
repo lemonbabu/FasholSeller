@@ -21,7 +21,6 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/btnBack"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -74,7 +73,6 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/btnFilter"
         android:layout_width="28dp"
         android:layout_height="24dp"
@@ -86,5 +84,69 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCustomerAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="60dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCustomerName"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-15dp"
+        android:layout_marginStart="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/customer_name"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivCustomerAvatar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCustomerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/details"
+        android:textColor="@color/white"
+        android:drawablePadding="5dp"
+        app:drawableEndCompat="@drawable/ic_feather_chevron_down"
+        app:layout_constraintStart_toEndOf="@+id/ivCustomerAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
+
+
+    <ImageButton
+        android:id="@+id/btnCart"
+        android:layout_width="28dp"
+        android:layout_height="24dp"
+        android:padding="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@null"
+        android:contentDescription="@string/filter"
+        android:src="@drawable/ic_feather_shopping_cart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tvChartNumberOfItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnCart"
+        app:layout_constraintBottom_toTopOf="@+id/btnCart" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

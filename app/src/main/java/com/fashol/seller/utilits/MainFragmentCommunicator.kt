@@ -1,6 +1,6 @@
 package com.fashol.seller.utilits
 
 
-interface FragmentCommunicator {
+interface MainFragmentCommunicator {
     fun passData(txt: String)
 }
