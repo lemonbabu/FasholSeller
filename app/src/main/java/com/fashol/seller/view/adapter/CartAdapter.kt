@@ -24,7 +24,7 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
         return MyViewHolder(itemView)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = itemList[position]
 
@@ -32,9 +32,26 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
         //holder.quantity.text = item.quantity.toString()
         holder.pVariant.text = "(" + item.variant + ")"
         holder.priceQuantity.text = "দাম: " + item.quantity + " * " + item.unitPrice + " = " + (item.quantity * item.unitPrice)  + " টাকা"
+        holder.qun.text = item.quantity.toString()
         val url = Utils.baseUrl() +  item.avatar
         // load image into view
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.avatar)
+
+        holder.add.setOnClickListener {
+            item.quantity = item.quantity + 1
+            notifyDataSetChanged()
+        }
+
+        holder.minus.setOnClickListener {
+            if(item.quantity > 0.0){
+                item.quantity = item.quantity - 1
+                notifyDataSetChanged()
+            }
+        }
+
+        holder.remove.setOnClickListener {
+            onItemClickListener.onRemoveClickListener(position, (item.unitPrice * item.quantity))
+        }
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onCartItemClickListener(position, (item.unitPrice * item.quantity))
@@ -50,12 +67,17 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
         var pName: TextView = view.findViewById(R.id.tvCartProductName)
         var pVariant: TextView = view.findViewById(R.id.tvItemVariant)
         var priceQuantity: TextView = view.findViewById(R.id.tv_cart_item_Price)
+        var qun: TextView = view.findViewById(R.id.tvQuantity)
         var remove: TextView = view.findViewById(R.id.tv_cart_item_remove)
+        var minus: TextView = view.findViewById(R.id.tvCartItemMinus)
+        var add: TextView = view.findViewById(R.id.tvCartItemPlus)
         //var quantity: TextView = view.findViewById(R.id.tvQuantity)
     }
 
     interface OnCartItemClickListener{
         fun onCartItemClickListener(id: Int, price: Double)
+
+        fun onRemoveClickListener(id: Int, price: Double)
     }
 
 }

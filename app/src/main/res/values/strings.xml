@@ -82,13 +82,13 @@
     <string name="store_name">Store Name</string>
     <string name="cancel">Cancel</string>
     <string name="order_place_confirm">Order Place Confirm</string>
-    <string name="view_profile">View Profile</string>
+    <string name="view_profile">View Orders</string>
     <string name="login_with_fashol">Login with Fashol</string>
     <string name="category_list">Category List</string>
     <string name="product_list">Product List</string>
     <string name="status">Status</string>
     <string name="date_sample">03-Dec-2022</string>
-    <string name="sample_address">Townhall Market</string>
+    <string name="sample_address">Town hall Market</string>
     <string name="order_id">Order ID: RO 89833422</string>
     <string name="order_details">-----Order Details-----</string>
     <string name="no">No</string>
@@ -109,5 +109,6 @@
     <string name="up_coming">up coming…</string>
     <string name="no_product_available">No Product Available</string>
     <string name="no_customer_available">No Customer Available</string>
+    <string name="order_no">Order No:</string>
 
 </resources>

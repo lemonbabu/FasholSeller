@@ -80,7 +80,6 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 addNewCustomer()
                 true
             }
-
         }
 
         binding.titleBar.btnNotification.setOnClickListener {
@@ -161,7 +160,6 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 orderApi(body)
                 //orderConfirmationPage()
             }
-
         }
 
 

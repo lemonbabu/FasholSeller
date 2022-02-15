@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnProfile"
+        android:id="@+id/btnOrders"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="140dp"
         android:layout_height="wrap_content"

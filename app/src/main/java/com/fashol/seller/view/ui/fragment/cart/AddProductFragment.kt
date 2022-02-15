@@ -190,6 +190,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product), CategoryAdap
             for(i in item.tags){
                 if (i.lowercase().contains(text.lowercase()) ) {
                     filteredList.add(item)
+                    break
                 }
             }
         }

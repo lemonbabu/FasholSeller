@@ -13,6 +13,7 @@ import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.data.repository.local.CustomerListData
 import com.fashol.seller.databinding.FragmentSelectCustomerBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
@@ -69,6 +70,13 @@ class SelectCustomerFragment : Fragment(R.layout.fragment_select_customer), Cust
          putString("customerAvatar", avatar)
          putInt("cartItem", 0)
       }?.apply()
+
+      //For clearing Cart data
+      if(id.toString() !== CartData.customerId){
+         CartData.totalItem = 0
+         CartData.totalAmount = 0.0
+         CartData.cartData = arrayListOf()
+      }
 
       fc.passData("ProductPage")
 

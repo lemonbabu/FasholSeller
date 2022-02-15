@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import com.fashol.seller.R
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
@@ -14,16 +13,16 @@ import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.databinding.FragmentOrderListBinding
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.Utils
-import com.fashol.seller.view.adapter.OrderListAdapter
+import com.fashol.seller.view.adapter.OrderList2Adapter
 import kotlinx.coroutines.*
 import retrofit2.awaitResponse
 
 @DelicateCoroutinesApi
-class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapter.OnOrderClickListener {
+class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderList2Adapter.OnOrderClickListener {
 
     private lateinit var binding: FragmentOrderListBinding
     private lateinit var fc: MainFragmentCommunicator
-    private lateinit var orderListAdapter: OrderListAdapter
+    private lateinit var orderListAdapter: OrderList2Adapter
     private val orderListApi: ApiInterfaces.OrderListInterface by lazy { RetrofitClient.getOrderList() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class OrderListFragment : Fragment(R.layout.fragment_order_list), OrderListAdapt
         fc = activity as MainFragmentCommunicator
 
         //binding.rvOrderList.layoutManager = GridLayoutManager(context,1)
-        orderListAdapter = OrderListAdapter(this)
+        orderListAdapter = OrderList2Adapter(this)
 
 
         if(!OrderListData.flag){

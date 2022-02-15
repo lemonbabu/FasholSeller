@@ -22,11 +22,9 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             fc.passData("Dashboard")
         }
 
-        binding.btnProfile.setOnClickListener {
-            fc.passData("CustomerProfile")
+        binding.btnOrders.setOnClickListener {
+            fc.passData("OrderList")
         }
-
-
     }
 
 }

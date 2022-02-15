@@ -8,6 +8,7 @@
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/bg_button_corner_round_rectangle_27.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/bg_rectangle_4_textbox.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/ic_address_loacation_marker_76.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/ic_baseline_circle_dot.xml" value="0.219" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/ic_call_round_black_13.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/ic_circle_details_21.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/drawable/ic_due_management_77.xml" value="0.36666666666666664" />
@@ -55,6 +56,7 @@
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_notificaiton_details.xml" value="0.3625" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_notification_item.xml" value="0.3319746376811594" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_order_item.xml" value="0.33" />
+        <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_order_item_all_order.xml" value="0.3625" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_product_details.xml" value="0.35625" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_product_item.xml" value="0.32659795098837435" />
         <entry key="..\:/Users/Lemon/Music/Fashol.com/FasholSeller/app/src/main/res/layout/layout_single_order_product_item.xml" value="0.35625" />

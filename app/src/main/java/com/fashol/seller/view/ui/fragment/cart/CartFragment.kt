@@ -45,6 +45,10 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartItemCli
     }
 
     override fun onCartItemClickListener(id: Int, price: Double) {
+        //
+    }
+
+    override fun onRemoveClickListener(id: Int, price: Double) {
         CartData.cartData.removeAt(id)
         CartData.totalAmount = CartData.totalAmount - price
         CartData.totalItem = CartData.totalItem - 1
