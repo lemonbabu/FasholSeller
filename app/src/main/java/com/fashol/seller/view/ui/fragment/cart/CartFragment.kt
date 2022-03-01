@@ -45,7 +45,8 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartItemCli
     }
 
     override fun onCartItemClickListener(id: Int, price: Double) {
-        //
+        CartData.totalAmount = CartData.totalAmount + price
+        fc.passPopUpData("reloadCart")
     }
 
     override fun onRemoveClickListener(id: Int, price: Double) {

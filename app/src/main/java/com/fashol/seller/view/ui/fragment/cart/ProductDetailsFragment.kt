@@ -49,12 +49,6 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
         binding.pbLoading.visibility = View.VISIBLE
 
         loadData()
-//
-//        val items = listOf("Material", "Design", "Components", "Android")
-//        val item : ArrayList<ProductDetailsDataModel.Result.Variant> = arrayListOf()
-//        item.add(ProductDetailsDataModel.Result.Variant(name = "Small", id = 1, price = 334.0))
-//        val adapter = ArrayAdapter(requireContext(), R.layout.layout_list_item, item)
-//        (lstVariant.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
         binding.tvClose.setOnClickListener {
             fcPopUp.passPopUpData("close")
@@ -65,22 +59,6 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
                 val selectedValue: String = listAdapter.getItem(position).toString()
                 binding.tvProductPrice.text = variantAdapter[position].price.toString()
             }
-
-//        binding.etProductQuantity.addTextChangedListener {
-//            val qun = it.toString().trim()
-//            val uPrice = binding.tvProductPrice.text.toString().trim()
-//
-//            if(binding.etProductQuantity.text.isEmpty()){
-//                binding.etProductQuantity.error = "Quantity need to fill up!"
-//                binding.etProductQuantity.requestFocus()
-//                return@addTextChangedListener
-//            }
-//            if(binding.lstVariant.isEmpty()){
-//                Toast.makeText(context, "Select Variant required", Toast.LENGTH_SHORT).show()
-//            } else{
-//                binding.tvSubtotal.text = (qun.toFloat() * uPrice.toFloat()).toString()
-//            }
-//        }
 
         binding.etProductQuantity.addTextChangedListener(object : TextWatcher {
 
@@ -137,6 +115,7 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
             try {
                 val response = productApi.getProductDetails(customerId, productId, "Bearer ${Utils.token()}").awaitResponse()
                 withContext(Dispatchers.Main){
+                    Log.d("Response= ", response.toString())
                     if (response.body()?.success == true){
                         //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
                         response.body()?.result?.let {
@@ -144,10 +123,12 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
                             variantAdapter = it.variants as ArrayList<ProductDetailsDataModel.Result.Variant>
                             vList = it.variants as ArrayList<ProductDetailsDataModel.Result.Variant>
                             val variantList = arrayListOf<String>()
+                            val variantList2 = arrayListOf<String>()
                             for(item in it.variants){
                                 variantList.add(item.name)
+                                variantList2.add(item.name + "[" + item.price + "]")
                             }
-                            listAdapter = ArrayAdapter(requireContext(), R.layout.layout_list_item, variantList)
+                            listAdapter = ArrayAdapter(requireContext(), R.layout.layout_list_item, variantList2)
                             (lstVariant.editText as? AutoCompleteTextView)?.setAdapter(listAdapter)
                         }
                     }else{
@@ -167,8 +148,9 @@ class ProductDetailsFragment : Fragment(R.layout.fragment_product_details) {
 
     private fun addItemInCart(){
         var variantId = 0
+        val vItem =((lstVariant.editText as AutoCompleteTextView).text.toString().trim()).split('[')
         for (item in vList){
-            if((lstVariant.editText as AutoCompleteTextView).text.toString().trim() == item.name){
+            if(vItem[0] == item.name){
                 variantId = item.id
             }
         }

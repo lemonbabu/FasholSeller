@@ -10,8 +10,7 @@ import com.fashol.seller.R
 import com.fashol.seller.data.model.orderdata.OrderListDataModel
 import com.fashol.seller.data.model.productdata.ProductDetailsDataModel
 
-class VariantListAdapter{}
-// ArrayAdapter<VariantListAdapter.MyViewHolder>() {
+//class VariantListAdapter() : ArrayAdapter<VariantListAdapter.MyViewHolder>() {
 //    private var orderList: ArrayList<ProductDetailsDataModel.Result.Variant> = ArrayList()
 //
 //    fun submitList(list: List<ProductDetailsDataModel.Result.Variant>){

@@ -40,6 +40,7 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
         holder.add.setOnClickListener {
             item.quantity = item.quantity + 1
             notifyDataSetChanged()
+            onItemClickListener.onCartItemClickListener(position, (item.unitPrice))
         }
 
         holder.minus.setOnClickListener {
@@ -47,6 +48,7 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
                 item.quantity = item.quantity - 1
                 notifyDataSetChanged()
             }
+            onItemClickListener.onCartItemClickListener(position, (-item.unitPrice))
         }
 
         holder.remove.setOnClickListener {
@@ -54,7 +56,7 @@ class CartAdapter(private var onItemClickListener: CartAdapter.OnCartItemClickLi
         }
 
         holder.itemView.setOnClickListener {
-            onItemClickListener.onCartItemClickListener(position, (item.unitPrice * item.quantity))
+            //onItemClickListener.onCartItemClickListener(position, (item.unitPrice * item.quantity))
         }
     }
 

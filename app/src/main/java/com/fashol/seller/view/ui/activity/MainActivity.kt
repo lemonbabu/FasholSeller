@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 body.add("order_lists", list)
 
                 Log.d("Body ", body.toString())
-                orderApi(body)
+                orderApiCalling(body)
                 //orderConfirmationPage()
             }
         }
@@ -442,10 +442,11 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
     }
 
     // API calling for Order Confirmations
-    private fun orderApi(body: JsonObject){
+    private fun orderApiCalling(body: JsonObject){
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val response = orderApi.setNewOrder(body, "Bearer ${Utils.token()}").awaitResponse()
+                Log.d("Response= ", response.toString())
                 withContext(Dispatchers.Main){
                     if (response.body()?.success == true){
                         //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
