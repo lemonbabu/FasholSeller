@@ -7,84 +7,79 @@ data class OrderDetailsResponseDataModel(
     var success: Boolean // true
 ) {
     data class Result(
-        var assigned_by: Int, // 1
+        var assigned_by: Int, // 2
         var customer: Customer,
-        var customer_id: Int, // 1
-        var id: Int, // 1
-        var note: String, // New order
-        var order_date: String, // -000001-11-29T17:58:20.000000Z
+        var customer_id: Int, // 8
+        var id: Int, // 9
+        var note: String, // first order
+        var order_date: String, // 0000-00-00
         var order_list: List<Order>,
-        var order_no: String, // OR-300122000001
+        var order_no: String, // OR-030222000007
         var ordered_by: Int, // 5
         var price_group_id: Int, // 1
         var status: String // pending
     ) {
         data class Customer(
-            var added_by: Int, // 3
+            var added_by: Int, // 72
             var details: Details,
-            var id: Int, // 1
-            var name: String, // Rubel test
-            var phone: String, // 1711877670
+            var id: Int, // 8
+            var name: String, // 6 Rubel Store Basundhara
+            var phone: String, // 1852802589
             var profile_pic: String, // /defaults/customer.jpeg
             var status: String, // active
-            var store_address: String, // Vatara, Natun Bazar, Dhaka
-            var store_name: String, // Rubel Store
-            var unique_id: String, // FCM-000001
-            var zone_id: Int // 10
+            var store_address: String, // GhatFar Bashundhara
+            var store_name: String, // 6 Rubel Store Basundhara
+            var unique_id: String, // FCM-000008
+            var zone_id: Int // 12
         ) {
             data class Details(
-                var address_line_1: String, // Panthapoth
-                var address_line_2: Any, // null
-                var customer_id: Int, // 1
-                var dob: String, // 2021-09-04
+                var address_line_1: String, // GhatFar Bashundhara
+                var address_line_2: String, // None
+                var customer_id: Int, // 8
+                var dob: String, // 2021-09-06
                 var geo_location: String, // ""
-                var id: Int, // 1
-                var nid_backpart: String, // customer_u_image_('unique_id').png
-                var nid_frontpart: String, // customer_u_image_('unique_id').png
+                var id: Int, // 8
+                var nid_backpart: String, // customer_u_image_12_Sep_12_33.png
+                var nid_frontpart: String, // customer_u_image_12_Sep_12_33.png
                 var nid_number: String, // 123456789
-                var store_image: String // customer_u_image_('unique_id').png
+                var store_image: String // customer_u_image_12_Sep_12_33.png
             )
         }
 
         data class Order(
-            var id: Int, // 1
+            var id: Int, // 17
             var note: Any, // null
-            var order_id: Int, // 1
+            var order_id: Int, // 9
+            var per_price: Int, // 0
             var product: Product,
-            var product_id: Int, // 2
-            var quantity: String, // 20.50
+            var product_id: Int, // 4
+            var quantity: String, // 23.00
             var status: String, // created
+            var total_price: Int, // 0
             var variant: Variant,
-            var variant_id: Int // 88
+            var variant_id: Int // 10
         ) {
             data class Product(
-                var category: Category,
-                var category_id: Int, // 4
-                var description: String, // কাঁঠাল
-                var id: Int, // 2
-                var image_path: String, // /images/product/product_F_PR395216_10_21_10_10_36.jpg
-                var name: String, // কাঁঠাল
-                var packaging_unit: String, // 1
-                var sku: String, // FSKU-0002
+                var category_id: Int, // 1
+                var description: String, // বরবটি
+                var id: Int, // 4
+                var image_path: String, // /images/product/product_21_Sep_21_08.jpg
+                var name: String, // বরবটি
+                var packaging_unit: String, // 5
+                var sku: String, // FSKU-0004
                 var tags: List<String>,
                 var unit: Unit,
-                var unit_id: Int // 2
+                var unit_id: Int // 1
             ) {
-                data class Category(
-                    var id: Int, // 4
-                    var image: String, // /images/category/fruits.png
-                    var name: String // ফল
-                )
-
                 data class Unit(
-                    var id: Int, // 2
-                    var name: String // Pcs
+                    var id: Int, // 1
+                    var name: String // Kg
                 )
             }
 
             data class Variant(
-                var id: Int, // 88
-                var name: String // মিস্টি ক্যারেট ex
+                var id: Int, // 10
+                var name: String // সাদা ছোট
             )
         }
     }

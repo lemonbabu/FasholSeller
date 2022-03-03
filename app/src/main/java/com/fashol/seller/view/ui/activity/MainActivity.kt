@@ -275,6 +275,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val response = logoutApi.logout("Bearer ${Utils.token()}").awaitResponse()
+                Log.d(" Response= ", response.toString())
                 withContext(Dispatchers.Main){
                     if (response.body()?.success == true){
                         //Toast.makeText(context, response.body()?.message.toString() , Toast.LENGTH_SHORT).show()
@@ -287,6 +288,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                                 putBoolean("session", false)
                                 putString("token", "")
                             }.apply()
+                            Utils.setToken("")
                             startActivity(Intent(applicationContext, Login::class.java))
                             finish()
                         }
@@ -298,6 +300,16 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                 Log.d(" Error to Order ", e.toString())
                 withContext(Dispatchers.Main) {
                     Toast.makeText(applicationContext,"Error occur Server not response!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext,"Logout Confirm!!", Toast.LENGTH_SHORT).show()
+                    val sharedPreferences = getSharedPreferences("Session", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.apply{
+                        putBoolean("session", false)
+                        putString("token", "")
+                    }.apply()
+                    Utils.setToken("")
+                    startActivity(Intent(applicationContext, Login::class.java))
+                    finish()
                 }
             }
         }

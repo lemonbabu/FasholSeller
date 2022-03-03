@@ -28,6 +28,8 @@ class OrderDetailsAdapter: RecyclerView.Adapter<OrderDetailsAdapter.MyViewHolder
         holder.itemQ.text = item.quantity
         holder.itemNo.text = position.toString()
         holder.itemV.text = item.variant.name
+        holder.itemP.text = item.per_price.toString()
+        holder.itemTotalP.text = item.total_price.toString()
     }
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,6 +37,8 @@ class OrderDetailsAdapter: RecyclerView.Adapter<OrderDetailsAdapter.MyViewHolder
         var itemName: TextView = view.findViewById(R.id.tvItemName)
         var itemV: TextView = view.findViewById(R.id.tvItemVariant)
         var itemQ: TextView = view.findViewById(R.id.tvItemQuantity)
+        var itemP: TextView = view.findViewById(R.id.tvItemPrice)
+        var itemTotalP: TextView = view.findViewById(R.id.tvItemTotalPrice)
     }
 
     override fun getItemCount(): Int {

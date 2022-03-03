@@ -97,7 +97,7 @@
     <string name="quantity">Quantity</string>
     <string name="_1">1</string>
     <string name="poteto">Poteto</string>
-    <string name="big_poteto">Big poteto</string>
+    <string name="big_potatoes">Big Potatoes</string>
     <string name="office_notice">Office Notice</string>
     <string name="taka"> টাকা</string>
     <string name="total_bangala">মোট :</string>
@@ -110,5 +110,6 @@
     <string name="no_product_available">No Product Available</string>
     <string name="no_customer_available">No Customer Available</string>
     <string name="order_no">Order No:</string>
+    <string name="price">Price</string>
 
 </resources>

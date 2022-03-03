@@ -17,9 +17,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 @DelicateCoroutinesApi
 class Login : AppCompatActivity(){
 
-    var Tag = "Login Url"
     private lateinit var binding: ActivityLoginBinding
-    private var flag = false
     private val url = "https://api.fashol.com/v1/sales-executive/login"
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
@@ -52,6 +50,8 @@ class Login : AppCompatActivity(){
                     val token = url.split("https://api.fashol.com/access-token/")
                     gotoHome(token[1])
                     return true
+                } else{
+                    binding.wvLogin.loadUrl(url)
                 }
             }
             // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs

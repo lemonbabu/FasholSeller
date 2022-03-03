@@ -16,7 +16,7 @@
     tools:targetApi="p">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:weightSum="100"
         android:orientation="horizontal"
@@ -27,7 +27,7 @@
             android:id="@+id/tvItemNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:text="@string/_1"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -42,7 +42,7 @@
             android:id="@+id/tvItemName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
+            android:layout_weight="30"
             android:text="@string/poteto"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -57,8 +57,8 @@
             android:id="@+id/tvItemVariant"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:text="@string/big_poteto"
+            android:layout_weight="30"
+            android:text="@string/big_potatoes"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:maxLines="1"
@@ -72,7 +72,38 @@
             android:id="@+id/tvItemQuantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="14"
+            android:layout_weight="12"
+            android:text="@string/_20"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvItemPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="11"
+            android:text="@string/_20"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemTotalPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
             android:text="@string/_20"
             android:textColor="@color/black"
             android:textSize="14sp"
