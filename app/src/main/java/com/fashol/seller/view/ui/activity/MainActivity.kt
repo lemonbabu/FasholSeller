@@ -20,6 +20,7 @@ import com.fashol.seller.data.repository.local.CartData
 import com.fashol.seller.data.repository.local.OrderListData
 import com.fashol.seller.data.repository.local.SellerProfile
 import com.fashol.seller.databinding.ActivityMainBinding
+import com.fashol.seller.services.LocationService
 import com.fashol.seller.utilits.MainFragmentCommunicator
 import com.fashol.seller.utilits.PopUpFragmentCommunicator
 import com.fashol.seller.utilits.Utils
@@ -61,6 +62,13 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fullScreen(this)
+
+
+
+        //Run background service
+        Intent(this, LocationService::class.java).also { intent ->
+            startService(intent)
+        }
 
         //Navigation view
         val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -144,7 +152,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
                     val p = JsonObject()
                     p.addProperty("product_id", item.id.toInt())
                     p.addProperty("variant_id", item.variantId)
-                    p.addProperty("quantity", item.quantity.toDouble())
+                    p.addProperty("quantity", item.quantity)
                     p.addProperty("note", "")
                     p.addProperty("status", "add")
                     list.add(p)
@@ -271,6 +279,7 @@ class MainActivity : AppCompatActivity(), MainFragmentCommunicator, PopUpFragmen
         binding.titleBar.tvCustomerDetails.visibility = View.VISIBLE
     }
 
+    // Logout APi
     private fun logout() {
         GlobalScope.launch(Dispatchers.IO) {
             try {

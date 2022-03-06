@@ -1,15 +1,20 @@
 package com.fashol.seller.view.ui.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.fashol.seller.BuildConfig
 import com.fashol.seller.data.api.ApiInterfaces
 import com.fashol.seller.data.api.RetrofitClient
@@ -28,18 +33,22 @@ class SplashScreen : AppCompatActivity() {
     private var versionName: String = BuildConfig.VERSION_NAME
     private val versionApi: ApiInterfaces.VersionCheckingInterface by lazy { RetrofitClient.getVersion() }
 
+    private var code = 123
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fullScreen(this)
 
-        loadVersion()
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), code)
+        } else {
+            loadVersion()
 
-        mHandler = Handler(mainLooper)
-        doWork()
-
-
+            mHandler = Handler(mainLooper)
+            doWork()
+        }
     }
 
 
@@ -100,6 +109,30 @@ class SplashScreen : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     //Toast.makeText(applicationContext,"Internet not stable or Server error occur!!", Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    //For User Permissions
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == code){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Location Permission granted", Toast.LENGTH_SHORT).show()
+
+                loadVersion()
+
+                mHandler = Handler(mainLooper)
+                doWork()
+            } else{
+                Toast.makeText(this, "Location Permission denied, Without permission we can't use this app", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), code)
+                startActivity(Intent(applicationContext, PermissionActivity::class.java))
+                finish()
             }
         }
     }

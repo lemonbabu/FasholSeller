@@ -111,5 +111,7 @@
     <string name="no_customer_available">No Customer Available</string>
     <string name="order_no">Order No:</string>
     <string name="price">Price</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="without_permission_you_can_t_use_this_app">Without Permission you can\'t use this app</string>
 
 </resources>

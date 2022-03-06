@@ -23,6 +23,15 @@ object RetrofitClient {
         return retrofit.create(ApiInterfaces.VersionCheckingInterface::class.java)
     }
 
+    //retrofit builder for location
+    fun sendLocation(): ApiInterfaces.LocationSendingInterface {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(URLGlobal)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+        return retrofit.create(ApiInterfaces.LocationSendingInterface::class.java)
+    }
+
     //retrofit builder for get Customer List
     fun getCustomerList(): ApiInterfaces.CustomerListInterface {
         val retrofit: Retrofit = Retrofit.Builder()

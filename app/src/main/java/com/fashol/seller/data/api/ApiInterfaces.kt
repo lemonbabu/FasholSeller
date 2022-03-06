@@ -3,6 +3,7 @@ package com.fashol.seller.data.api
 import com.fashol.seller.data.model.VersionCheckingDataModel
 import com.fashol.seller.data.model.customerdata.CreateCustomerResponse
 import com.fashol.seller.data.model.customerdata.CustomerDataModel
+import com.fashol.seller.data.model.location.LocationDataModel
 import com.fashol.seller.data.model.notification.NotificationDataModel
 import com.fashol.seller.data.model.orderdata.OrderConfirmationResponse
 import com.fashol.seller.data.model.orderdata.OrderDetailsResponseDataModel
@@ -24,6 +25,18 @@ interface ApiInterfaces{
         @GET("v1/sales-executive/version")
         fun getVersion(
         ): Call<VersionCheckingDataModel>
+    }
+
+    // Location sending interface
+    interface LocationSendingInterface{
+        @FormUrlEncoded
+        @POST("common-api/location")
+        fun sendLocation(
+            @Field("user_id") name: String,
+            @Field("longitude") phone: String,
+            @Field("latitude") storeAddress: String,
+            @Header("Authorization") auth: String,
+        ): Call<LocationDataModel>
     }
 
     // Customer List interface
